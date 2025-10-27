@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div popovertarget="function-help" class="hoverPopOver">popME</div>
+<div id="function-help" popover>Here's how to input a function:</div>
+    <div popovertarget="function-help1">popME</div>
+<div id="function-help1" popover>ere's how to input a function:</div>
+    <div popovertarget="function-help2">popME</div>
+<div id="function-help2" popover>s how to input a function:</div>
+
+<script>
+    const popover = document.querySelectorAll(".hoverPopOver");
+
+    popover.forEach((e) => {
+      const target = document.querySelector("#" + e.getAttribute("popovertarget"));
+      console.log(target)
+      e.addEventListener("mouseover",()=>{
+        target.showPopover();
+      });
+      
+      e.addEventListener("mouseout",()=>{
+        target.hidePopover();
+      });
+    });
+</script>
+
+  </body>
+</html>
