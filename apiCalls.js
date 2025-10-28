@@ -17,11 +17,3 @@ async function getMovieGenreIds() {
     .then(res => res.json())
     .catch(err => console.error(err));
 }
-
-
-function renderToCarousel(data, genres) {
-  const el = document.getElementById("topRatedMovies")
-  if (el) {
-    el.updateDG(data["results"], genres["genres"])
-  }
-}
