@@ -17,3 +17,9 @@ async function getMovieGenreIds() {
     .then(res => res.json())
     .catch(err => console.error(err));
 }
+
+async function getMovieById(id) {
+  return fetch('https://api.themoviedb.org/3/movie/' + id, options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}

@@ -1,0 +1,252 @@
+:root[data-theme="light"] {
+  --text-50: rgb(244, 241, 242);
+  --text-100: rgb(232, 227, 229);
+  --text-200: rgb(209, 199, 202);
+  --text-300: rgb(186, 171, 176);
+  --text-400: rgb(163, 143, 150);
+  --text-500: rgb(140, 115, 123);
+  --text-600: rgb(112, 92, 99);
+  --text-700: rgb(84, 69, 74);
+  --text-800: rgb(56, 46, 49);
+  --text-900: rgb(28, 23, 25);
+  --text-950: rgb(14, 11, 12);
+
+  --background-50: rgb(244, 241, 241);
+  --background-100: rgb(233, 226, 228);
+  --background-200: rgb(211, 197, 201);
+  --background-300: rgb(188, 169, 174);
+  --background-400: rgb(166, 140, 146);
+  --background-500: rgb(144, 111, 119);
+  --background-600: rgb(115, 89, 95);
+  --background-700: rgb(86, 67, 72);
+  --background-800: rgb(58, 44, 48);
+  --background-900: rgb(29, 22, 24);
+  --background-950: rgb(14, 11, 12);
+
+  --primary-50: rgb(244, 241, 242);
+  --primary-100: rgb(232, 227, 228);
+  --primary-200: rgb(210, 198, 202);
+  --primary-300: rgb(187, 170, 175);
+  --primary-400: rgb(164, 142, 149);
+  --primary-500: rgb(142, 113, 122);
+  --primary-600: rgb(113, 91, 98);
+  --primary-700: rgb(85, 68, 73);
+  --primary-800: rgb(57, 45, 49);
+  --primary-900: rgb(28, 23, 24);
+  --primary-950: rgb(14, 11, 12);
+
+  --secondary-50: rgb(243, 244, 241);
+  --secondary-100: rgb(231, 232, 227);
+  --secondary-200: rgb(207, 209, 199);
+  --secondary-300: rgb(183, 186, 171);
+  --secondary-400: rgb(159, 163, 143);
+  --secondary-500: rgb(135, 140, 115);
+  --secondary-600: rgb(108, 112, 92);
+  --secondary-700: rgb(81, 84, 69);
+  --secondary-800: rgb(54, 56, 46);
+  --secondary-900: rgb(27, 28, 23);
+  --secondary-950: rgb(13, 14, 11);
+
+  --accent-50: rgb(242, 244, 241);
+  --accent-100: rgb(228, 232, 227);
+  --accent-200: rgb(201, 209, 199);
+  --accent-300: rgb(174, 186, 171);
+  --accent-400: rgb(148, 163, 143);
+  --accent-500: rgb(121, 140, 115);
+  --accent-600: rgb(97, 112, 92);
+  --accent-700: rgb(72, 84, 69);
+  --accent-800: rgb(48, 56, 46);
+  --accent-900: rgb(24, 28, 23);
+  --accent-950: rgb(12, 14, 11);
+
+}
+:root[data-theme="dark"] {
+  --text-50: rgb(14, 11, 12);
+  --text-100: rgb(28, 23, 25);
+  --text-200: rgb(56, 46, 49);
+  --text-300: rgb(84, 69, 74);
+  --text-400: rgb(112, 92, 99);
+  --text-500: rgb(140, 115, 123);
+  --text-600: rgb(163, 143, 150);
+  --text-700: rgb(186, 171, 176);
+  --text-800: rgb(209, 199, 202);
+  --text-900: rgb(232, 227, 229);
+  --text-950: rgb(244, 241, 242);
+
+  --background-50: rgb(14, 11, 12);
+  --background-100: rgb(29, 22, 24);
+  --background-200: rgb(58, 44, 48);
+  --background-300: rgb(86, 67, 72);
+  --background-400: rgb(115, 89, 95);
+  --background-500: rgb(144, 111, 119);
+  --background-600: rgb(166, 140, 146);
+  --background-700: rgb(188, 169, 174);
+  --background-800: rgb(211, 197, 201);
+  --background-900: rgb(233, 226, 228);
+  --background-950: rgb(244, 241, 241);
+
+  --primary-50: rgb(14, 11, 12);
+  --primary-100: rgb(28, 23, 24);
+  --primary-200: rgb(57, 45, 49);
+  --primary-300: rgb(85, 68, 73);
+  --primary-400: rgb(113, 91, 98);
+  --primary-500: rgb(142, 113, 122);
+  --primary-600: rgb(164, 142, 149);
+  --primary-700: rgb(187, 170, 175);
+  --primary-800: rgb(210, 198, 202);
+  --primary-900: rgb(232, 227, 228);
+  --primary-950: rgb(244, 241, 242);
+
+  --secondary-50: rgb(13, 14, 11);
+  --secondary-100: rgb(27, 28, 23);
+  --secondary-200: rgb(54, 56, 46);
+  --secondary-300: rgb(81, 84, 69);
+  --secondary-400: rgb(108, 112, 92);
+  --secondary-500: rgb(135, 140, 115);
+  --secondary-600: rgb(159, 163, 143);
+  --secondary-700: rgb(183, 186, 171);
+  --secondary-800: rgb(207, 209, 199);
+  --secondary-900: rgb(231, 232, 227);
+  --secondary-950: rgb(243, 244, 241);
+
+  --accent-50: rgb(12, 14, 11);
+  --accent-100: rgb(24, 28, 23);
+  --accent-200: rgb(48, 56, 46);
+  --accent-300: rgb(72, 84, 69);
+  --accent-400: rgb(97, 112, 92);
+  --accent-500: rgb(121, 140, 115);
+  --accent-600: rgb(148, 163, 143);
+  --accent-700: rgb(174, 186, 171);
+  --accent-800: rgb(201, 209, 199);
+  --accent-900: rgb(228, 232, 227);
+  --accent-950: rgb(242, 244, 241);
+}
+
+:root {
+  --light-text-50: rgb(244, 241, 242);
+  --light-text-100: rgb(232, 227, 229);
+  --light-text-200: rgb(209, 199, 202);
+  --light-text-300: rgb(186, 171, 176);
+  --light-text-400: rgb(163, 143, 150);
+  --light-text-500: rgb(140, 115, 123);
+  --light-text-600: rgb(112, 92, 99);
+  --light-text-700: rgb(84, 69, 74);
+  --light-text-800: rgb(56, 46, 49);
+  --light-text-900: rgb(28, 23, 25);
+  --light-text-950: rgb(14, 11, 12);
+
+  --light-background-50: rgb(244, 241, 241);
+  --light-background-100: rgb(233, 226, 228);
+  --light-background-200: rgb(211, 197, 201);
+  --light-background-300: rgb(188, 169, 174);
+  --light-background-400: rgb(166, 140, 146);
+  --light-background-500: rgb(144, 111, 119);
+  --light-background-600: rgb(115, 89, 95);
+  --light-background-700: rgb(86, 67, 72);
+  --light-background-800: rgb(58, 44, 48);
+  --light-background-900: rgb(29, 22, 24);
+  --light-background-950: rgb(14, 11, 12);
+
+  --light-primary-50: rgb(244, 241, 242);
+  --light-primary-100: rgb(232, 227, 228);
+  --light-primary-200: rgb(210, 198, 202);
+  --light-primary-300: rgb(187, 170, 175);
+  --light-primary-400: rgb(164, 142, 149);
+  --light-primary-500: rgb(142, 113, 122);
+  --light-primary-600: rgb(113, 91, 98);
+  --light-primary-700: rgb(85, 68, 73);
+  --light-primary-800: rgb(57, 45, 49);
+  --light-primary-900: rgb(28, 23, 24);
+  --light-primary-950: rgb(14, 11, 12);
+
+  --light-secondary-50: rgb(243, 244, 241);
+  --light-secondary-100: rgb(231, 232, 227);
+  --light-secondary-200: rgb(207, 209, 199);
+  --light-secondary-300: rgb(183, 186, 171);
+  --light-secondary-400: rgb(159, 163, 143);
+  --light-secondary-500: rgb(135, 140, 115);
+  --light-secondary-600: rgb(108, 112, 92);
+  --light-secondary-700: rgb(81, 84, 69);
+  --light-secondary-800: rgb(54, 56, 46);
+  --light-secondary-900: rgb(27, 28, 23);
+  --light-secondary-950: rgb(13, 14, 11);
+
+  --light-accent-50: rgb(242, 244, 241);
+  --light-accent-100: rgb(228, 232, 227);
+  --light-accent-200: rgb(201, 209, 199);
+  --light-accent-300: rgb(174, 186, 171);
+  --light-accent-400: rgb(148, 163, 143);
+  --light-accent-500: rgb(121, 140, 115);
+  --light-accent-600: rgb(97, 112, 92);
+  --light-accent-700: rgb(72, 84, 69);
+  --light-accent-800: rgb(48, 56, 46);
+  --light-accent-900: rgb(24, 28, 23);
+  --light-accent-950: rgb(12, 14, 11);
+}
+
+:root {
+  --dark-text-50: rgb(14, 11, 12);
+  --dark-text-100: rgb(28, 23, 25);
+  --dark-text-200: rgb(56, 46, 49);
+  --dark-text-300: rgb(84, 69, 74);
+  --dark-text-400: rgb(112, 92, 99);
+  --dark-text-500: rgb(140, 115, 123);
+  --dark-text-600: rgb(163, 143, 150);
+  --dark-text-700: rgb(186, 171, 176);
+  --dark-text-800: rgb(209, 199, 202);
+  --dark-text-900: rgb(232, 227, 229);
+  --dark-text-950: rgb(244, 241, 242);
+
+  --dark-background-50: rgb(14, 11, 12);
+  --dark-background-100: rgb(29, 22, 24);
+  --dark-background-200: rgb(58, 44, 48);
+  --dark-background-300: rgb(86, 67, 72);
+  --dark-background-400: rgb(115, 89, 95);
+  --dark-background-500: rgb(144, 111, 119);
+  --dark-background-600: rgb(166, 140, 146);
+  --dark-background-700: rgb(188, 169, 174);
+  --dark-background-800: rgb(211, 197, 201);
+  --dark-background-900: rgb(233, 226, 228);
+  --dark-background-950: rgb(244, 241, 241);
+
+  --dark-primary-50: rgb(14, 11, 12);
+  --dark-primary-100: rgb(28, 23, 24);
+  --dark-primary-200: rgb(57, 45, 49);
+  --dark-primary-300: rgb(85, 68, 73);
+  --dark-primary-400: rgb(113, 91, 98);
+  --dark-primary-500: rgb(142, 113, 122);
+  --dark-primary-600: rgb(164, 142, 149);
+  --dark-primary-700: rgb(187, 170, 175);
+  --dark-primary-800: rgb(210, 198, 202);
+  --dark-primary-900: rgb(232, 227, 228);
+  --dark-primary-950: rgb(244, 241, 242);
+
+  --dark-secondary-50: rgb(13, 14, 11);
+  --dark-secondary-100: rgb(27, 28, 23);
+  --dark-secondary-200: rgb(54, 56, 46);
+  --dark-secondary-300: rgb(81, 84, 69);
+  --dark-secondary-400: rgb(108, 112, 92);
+  --dark-secondary-500: rgb(135, 140, 115);
+  --dark-secondary-600: rgb(159, 163, 143);
+  --dark-secondary-700: rgb(183, 186, 171);
+  --dark-secondary-800: rgb(207, 209, 199);
+  --dark-secondary-900: rgb(231, 232, 227);
+  --dark-secondary-950: rgb(243, 244, 241);
+
+  --dark-accent-50: rgb(12, 14, 11);
+  --dark-accent-100: rgb(24, 28, 23);
+  --dark-accent-200: rgb(48, 56, 46);
+  --dark-accent-300: rgb(72, 84, 69);
+  --dark-accent-400: rgb(97, 112, 92);
+  --dark-accent-500: rgb(121, 140, 115);
+  --dark-accent-600: rgb(148, 163, 143);
+  --dark-accent-700: rgb(174, 186, 171);
+  --dark-accent-800: rgb(201, 209, 199);
+  --dark-accent-900: rgb(228, 232, 227);
+  --dark-accent-950: rgb(242, 244, 241);
+}
+
+:root {
+  --background:var(--dark-background-50);
+  --text:var(--dark-text-50);
+}

@@ -6,8 +6,14 @@ function renderToCarousel(data, genres, elem) {
     el = elem["elem"];
   } 
   if (el) {
-    console.log(el)
     el.updateDG(data["results"], genres["genres"])
   }
 }
 
+function setDarkTheme(bool) {
+  if (bool) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+}

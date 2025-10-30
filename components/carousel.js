@@ -43,28 +43,25 @@ class CarouselSlider extends HTMLElement {
 
       let container = document.createElement("div")
 
-      let popover = document.createElement("info-box")
-      popover.genres = this.#genres
-      popover.data = elem
-      popover.id = elem["id"] + "popover"
-      popover.popover = "auto"
-      popover.style.padding = 0
-      popover.style.border = "none"
+      //let popover = document.createElement("info-box")
+      //popover.genres = this.#genres
+      //popover.data = elem
+      //popover.id = elem["id"] + "popover"
+      //popover.popover = "auto"
+      //popover.style.padding = 0
+      //popover.style.border = "none"
 
       let img = document.createElement("img")
       img.src = 'https://image.tmdb.org/t/p/w342/' + elem["poster_path"]
-      img.setAttribute("popovertarget", elem["id"] + "popover")
+      //img.setAttribute("popovertarget", elem["id"] + "popover")
+      let id = elem["id"]
 
       img.addEventListener('click', () => {
-        if (popover.matches(":popover-open")) {
-          popover.hidePopover()
-        } else {
-          popover.showPopover()
-        }
+        window.location.hash='info?id=' + id + '&t=m'
       })
 
       container.appendChild(img)
-      container.appendChild(popover)
+      //container.appendChild(popover)
       
       html.appendChild(container)
     }
