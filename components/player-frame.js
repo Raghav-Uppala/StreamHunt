@@ -21,8 +21,8 @@ class PlayerFrame extends HTMLElement {
     this.render();
   }
 
+
   render() {
-    console.log(this.#data)
     let iframe = document.createElement("iframe")
     let link = ""
     if (this.#data["p"] == "v") {
@@ -35,7 +35,6 @@ class PlayerFrame extends HTMLElement {
         season_ep = "/" + this.#data["s"] + "/" + this.#data["e"]
       }
       link = "https://vidlink.pro/" + type + "/" + this.#data["id"] + season_ep
-      console.log(link)
     } else if (this.#data["p"] == "e") {
       link = "https://www.2embed.cc/"
       if (this.#data["t"] == "m") {
@@ -75,8 +74,6 @@ class PlayerFrame extends HTMLElement {
     let backArrowCont = document.createElement("div")
     backArrowCont.innerHTML = backArrow
     backArrowCont.className = "backArrowCont"
-    
-
 
     backArrowCont.addEventListener("click", () => {
       window.location.hash = "";
@@ -129,9 +126,18 @@ class PlayerFrame extends HTMLElement {
       </style>
     `;
 
+
     let container = document.createElement("div")
-    container.appendChild(backArrowCont)
     container.appendChild(iframe)
+        window.addEventListener("message", function (event) {
+      // console.log("event: ", event);
+      //console.log(event)
+      //console.log("Message received from the player: ", JSON.parse(event.data)); // Message received from player
+      if (typeof event.data === "string") {
+        var messageArea = document.querySelector("#messageArea");
+        messageArea.innerText = event.data;
+      }
+    });
 
     this.#shadow.appendChild(container)
   }

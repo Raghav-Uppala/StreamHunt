@@ -21,8 +21,8 @@ class WatchPage extends HTMLElement {
     let players = {
       "1" : "v",
       "2" : "k",
-      "3" : "s",
-      "4" : "a",
+      "3" : "a",
+      "4" : "s",
     }
     let player = document.createElement("player-frame")
     let modData = structuredClone(this.#params)
@@ -31,11 +31,25 @@ class WatchPage extends HTMLElement {
     } else {
       modData["p"] = "v"
     }
-    console.log(modData)
     player.data = modData
+
+    const serverSelector = document.createElement("server-selector");
+
+    // list of options
+    serverSelector.options = [
+      { label: "Server 1", value: "1" },
+      { label: "Server 2", value: "2" },
+      { label: "Server 3", value: "3" },
+      { label: "Server 4", value: "4" }
+    ];
+    serverSelector.addEventListener("new-server", (e) => {
+      modData["p"] = players[e.detail.value]
+      player.data = modData
+    });
 
     this.#shadow.innerHTML = ""
     this.#shadow.appendChild(player)
+    this.#shadow.appendChild(serverSelector)
   }
 }
 customElements.define("watch-page", WatchPage);

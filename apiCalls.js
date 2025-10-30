@@ -23,3 +23,9 @@ async function getMovieById(id) {
     .then(res => res.json())
     .catch(err => console.error(err))
 }
+
+async function getMovieByName(name) {
+  return fetch('https://api.themoviedb.org/3/search/movie?query=' + name, options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}

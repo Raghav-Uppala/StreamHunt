@@ -10,6 +10,12 @@ class CustomHeader extends HTMLElement {
     this.render();
   }
 
+  search(query) {
+    let uri = "#search?q=" + encodeURIComponent(query)
+    console.log(uri)
+    window.location.hash = uri
+  }
+
   render() {
     let prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkTheme(prefersDark)
@@ -55,9 +61,18 @@ class CustomHeader extends HTMLElement {
     themeSwitcher.addEventListener('mouseout', function () {
       themeSwitcher.style.backgroundColor = 'initial';
     });
-    
+
+    let searchBar = document.createElement("input")
+
+
+    searchBar.addEventListener("keypress", (e) => {
+      if(e.key == "Enter") {
+        this.search(searchBar.value)
+      }
+    })
     
     container.appendChild(themeSwitcher);
+    container.appendChild(searchBar)
     
 
     this.#shadow.innerHTML = `

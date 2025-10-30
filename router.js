@@ -35,6 +35,7 @@ function findPage({path, params}) {
   if (path in routes) {
     let page = document.createElement(routes[path])
     if (page && Object.keys(params).length != 0) {
+      console.log(params)
       page.params = params
     }
     let main =  document.querySelector("#app")

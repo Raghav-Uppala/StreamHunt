@@ -53,6 +53,9 @@ class CarouselSlider extends HTMLElement {
 
       let img = document.createElement("img")
       img.src = 'https://image.tmdb.org/t/p/w342/' + elem["poster_path"]
+      if (elem["poster_path"] == null) {
+        img.src = "https://placehold.co/342x513/60656b/FFF?text=No+Poster"
+      }
       //img.setAttribute("popovertarget", elem["id"] + "popover")
       let id = elem["id"]
 
