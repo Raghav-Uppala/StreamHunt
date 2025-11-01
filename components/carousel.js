@@ -41,6 +41,11 @@ class CarouselSlider extends HTMLElement {
     for (let i = 0; i < this.#data.length; i++) {
       elem = this.#data[i]
 
+      let type = "m"
+      if (elem.hasOwnProperty("first_air_date")) {
+        type = "s"
+      }
+
       let container = document.createElement("div")
 
       //let popover = document.createElement("info-box")
@@ -60,8 +65,8 @@ class CarouselSlider extends HTMLElement {
       let id = elem["id"]
 
       img.addEventListener('click', () => {
-        window.location.hash='info?id=' + id + '&t=m'
-      })
+        window.location.hash='info?id=' + id + '&t=' + type
+ m     })
 
       container.appendChild(img)
       //container.appendChild(popover)

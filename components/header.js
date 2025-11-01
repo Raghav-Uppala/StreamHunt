@@ -42,7 +42,7 @@ class CustomHeader extends HTMLElement {
     themeSwitcher.querySelector("svg").style.width = "32px";
     themeSwitcher.querySelector("svg").style.height = "32px";
     themeSwitcher.setAttribute("aria-pressed", prefersDark)
-    themeSwitcher.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--background").trim();
+    themeSwitcher.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--background-50").trim();
     themeSwitcher.style.border = "none"
     themeSwitcher.style.borderRadius = "4px"
     themeSwitcher.addEventListener('click',() => { 
@@ -52,7 +52,7 @@ class CustomHeader extends HTMLElement {
       themeSwitcher.innerHTML = !pressed ? sunIcon : moonIcon;
       themeSwitcher.querySelector("svg").style.width = "32px";
       themeSwitcher.querySelector("svg").style.height = "32px";
-      themeSwitcher.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--background").trim();
+      themeSwitcher.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--background-50").trim();
     });
     themeSwitcher.addEventListener('mouseover', function () {
       themeSwitcher.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--background-200").trim();

@@ -17,7 +17,7 @@ class HomePage extends HTMLElement {
   }
 
   fetchData() {
-    let data = [getTopRated(), getMovieGenreIds()]
+    let data = [getTopRatedMovies(), getTopRatedShows()]
     Promise.all(data)
       .then((res) => {
         HomePage.cachedData = res
@@ -35,17 +35,28 @@ class HomePage extends HTMLElement {
   }
 
   render(data) {
-    let carousel = document.createElement("carousel-slider")
-    carousel.id = "topRatedMovies"
+    let carouselM = document.createElement("carousel-slider")
+    carouselM.id = "topRatedMovies"
+
+    let carouselS = document.createElement("carousel-slider")
+    carouselS.id = "topRatedShows"
 
     this.#shadow.innerHTML = "<custom-header></custom-header>"
-    this.#shadow.appendChild(carousel)
+    this.#shadow.appendChild(carouselM)
+    this.#shadow.appendChild(carouselS)
 
-    
-    Promise.all([data[0],data[1]])
+    Promise.resolve(data[0])
       .then((results) => {
-        renderToCarousel(results[0], results[1], { "elem" : carousel})
+        console.log(results)
+        carouselM.data = results["results"]
       })
+
+    Promise.resolve(data[1])
+      .then((results) => {
+        console.log(results)
+        carouselS.data = results["results"]
+      })
+
   }
 }
 customElements.define("home-page", HomePage);

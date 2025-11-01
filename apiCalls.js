@@ -6,7 +6,7 @@ const options = {
   }
 };
 
-async function getTopRated() {
+async function getTopRatedMovies() {
   return fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options)
     .then(res => res.json())
     .catch(err => console.error(err));
@@ -26,6 +26,24 @@ async function getMovieById(id) {
 
 async function getMovieByName(name) {
   return fetch('https://api.themoviedb.org/3/search/movie?query=' + name, options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}
+
+async function getTopRatedShows() {
+  return fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+async function getShowById(id) {
+  return fetch('https://api.themoviedb.org/3/tv/' + id, options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}
+
+async function getShowByName(name) {
+  return fetch('https://api.themoviedb.org/3/search/tv?query=' + name, options)
     .then(res => res.json())
     .catch(err => console.error(err))
 }

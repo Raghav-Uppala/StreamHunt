@@ -52,9 +52,9 @@ class PlayerFrame extends HTMLElement {
     } else if (this.#data["p"] == "s") {
       link = "https://vidsrc-embed.ru/embed"
       if (this.#data["t"] == "m") {
-        link += "/movie"
+        link += "/movie/" + this.#data["id"]
       } else if (this.#data["t"] == "s") {
-        link += "/tv"
+        link += "/tv/" + this.#data["id"] + "/" + this.#data["s"] + "-" + this.#data["e"]
       }
     } else if (this.#data["p"] == "k") {
       link = "https://www.vidking.net/embed/"
