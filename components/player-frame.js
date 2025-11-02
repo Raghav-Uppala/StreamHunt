@@ -129,15 +129,6 @@ class PlayerFrame extends HTMLElement {
 
     let container = document.createElement("div")
     container.appendChild(iframe)
-        window.addEventListener("message", function (event) {
-      // console.log("event: ", event);
-      //console.log(event)
-      //console.log("Message received from the player: ", JSON.parse(event.data)); // Message received from player
-      if (typeof event.data === "string") {
-        var messageArea = document.querySelector("#messageArea");
-        messageArea.innerText = event.data;
-      }
-    });
 
     this.#shadow.appendChild(container)
   }

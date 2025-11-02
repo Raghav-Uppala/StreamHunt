@@ -30,6 +30,13 @@ async function getMovieByName(name) {
     .catch(err => console.error(err))
 }
 
+async function getSimilarMovies(id) {
+  return fetch('https://api.themoviedb.org/3/movie/' + id + '/similar?language=en-US&page=1', options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+} 
+
+
 async function getTopRatedShows() {
   return fetch('https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1', options)
     .then(res => res.json())
@@ -47,3 +54,9 @@ async function getShowByName(name) {
     .then(res => res.json())
     .catch(err => console.error(err))
 }
+
+async function getSimilarShows(id) {
+  return fetch('https://api.themoviedb.org/3/tv/' + id + '/similar?language=en-US&page=1', options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+} 

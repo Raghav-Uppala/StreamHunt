@@ -33,9 +33,8 @@ class WatchPage extends HTMLElement {
     }
     player.data = modData
 
-    const serverSelector = document.createElement("server-selector");
+    let serverSelector = document.createElement("server-selector");
 
-    // list of options
     serverSelector.options = [
       { label: "Server 1", value: "1" },
       { label: "Server 2", value: "2" },
@@ -50,6 +49,22 @@ class WatchPage extends HTMLElement {
     this.#shadow.innerHTML = ""
     this.#shadow.appendChild(player)
     this.#shadow.appendChild(serverSelector)
+
+    if (this.#params["t"] == "s") {
+      let episodeSelector = document.createElement("episode-selector")
+      episodeSelector.episode = {"season":this.#params["s"], "episode":this.#params["e"]} 
+      getShowById(this.#params["id"])
+        .then(res => {
+          episodeSelector.data = res["seasons"]
+        })
+
+      episodeSelector.addEventListener("new-episode", (e) => {
+        window.location.hash = "#watch?id=" + this.#params["id"] + "&t=s&s=" + e.detail.season + "&e=" + e.detail.episode
+        episodeSelector.episode = {"season":e.detail.season, "episode":e.detail.episode} 
+      });
+
+      this.#shadow.appendChild(episodeSelector)
+    }
   }
 }
 customElements.define("watch-page", WatchPage);

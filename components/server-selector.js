@@ -18,32 +18,6 @@ class ServerSelector extends HTMLElement {
   }
 
   render() {
-    this.#shadow.innerHTML = `
-      <style>
-        label { 
-          display: flex;
-          cursor: pointer;
-          align-items:center;
-          justify-content:center;
-          padding:0 10px;
-          border-radius:50px;
-        }
-        input[type=radio] {
-          appearance: none;
-          position:absolute;
-          width:0px;
-          height:0px;
-        }
-        label:has(input[type=radio]:checked) {
-          background-color:var(--background-200);
-        }
-        .serverSelectorCont {
-          color:var(--text-950);
-          display:flex;
-        }
-      </style>
-    `;
-
     const groupName = "serverSelector";
     let container = document.createElement("div")
     container.className = "serverSelectorCont"
@@ -75,6 +49,31 @@ class ServerSelector extends HTMLElement {
       container.appendChild(label);
     });
 
+    this.#shadow.innerHTML = `
+      <style>
+        label { 
+          display: flex;
+          cursor: pointer;
+          align-items:center;
+          justify-content:center;
+          padding:0 10px;
+          border-radius:50px;
+        }
+        input[type=radio] {
+          appearance: none;
+          position:absolute;
+          width:0px;
+          height:0px;
+        }
+        label:has(input[type=radio]:checked) {
+          background-color:var(--background-200);
+        }
+        .serverSelectorCont {
+          color:var(--text-950);
+          display:flex;
+        }
+      </style>
+    `;
 
     this.#shadow.appendChild(container)
   }

@@ -29,6 +29,10 @@ class InfoBox extends HTMLElement {
     this.render();
   }
 
+  yearFromDate(date) {
+    return date.split('-')[0]
+  }
+
   render() {
     let background = document.createElement("div")
     background.className = "infoBackground"
@@ -61,8 +65,22 @@ class InfoBox extends HTMLElement {
 
     let title = document.createElement("h1")
     title.className = "title"
-    title.textContent = this.#data["mediaType"] == "m" ? this.#data["title"] : this.#data["name"]
+    if (this.#data["mediaType"] == "m") {
+      title.textContent = this.#data["title"] 
+      title.textContent +=  " (" + this.yearFromDate(this.#data["release_date"]) + ")"
+    } else if (this.#data["mediaType"] == "s") {
+      title.textContent = this.#data["name"] 
+      let last;
 
+      if (this.#data["in_production"] == false) {
+        last = this.yearFromDate(this.#data["last_air_date"])
+      } else {
+        last = ""
+      }
+
+      title.textContent +=  " (" + this.yearFromDate(this.#data["first_air_date"]) + " - " + last + ")"
+    }
+    
     let genres = document.createElement("div")
     genres.style.display = "flex"
     genres.className = "genres"
@@ -125,6 +143,31 @@ class InfoBox extends HTMLElement {
     })
     watchNowCont.appendChild(playVidlink)
 
+    let similarCont = document.createElement("div")
+
+    let similarHeading = document.createElement("h1")
+    similarHeading.textContent = "Similar "
+    similarHeading.className = "similarHeading"
+
+    let similar = document.createElement("carousel-slider")
+
+    if (this.#data["mediaType"] == "m") {
+      similarHeading.textContent += "Movies"
+      getSimilarMovies(this.#data["id"])
+        .then(res => {
+          similar.data = res["results"]
+        })
+    } else if (this.#data["mediaType"] == "s") {
+      similarHeading.textContent += "Shows"
+      getSimilarShows(this.#data["id"])
+        .then(res => {
+          similar.data = res["results"]
+        })
+    }
+
+    similarCont.appendChild(similarHeading)
+    similarCont.appendChild(similar)
+
     container.appendChild(title)
     container.appendChild(genres)
     container.appendChild(cont)
@@ -134,6 +177,9 @@ class InfoBox extends HTMLElement {
 
     this.#shadow.innerHTML = `
       <style>
+        .similarHeading {
+          color:var(--text-900);
+        }
         .desc {
           margin-left:20px;
         }
@@ -198,6 +244,7 @@ class InfoBox extends HTMLElement {
       </style>
     `;
     this.#shadow.appendChild(background)
+    this.#shadow.appendChild(similarCont)
   }
 }
 customElements.define("info-box", InfoBox);
