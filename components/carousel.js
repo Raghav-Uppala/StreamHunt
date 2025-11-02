@@ -36,8 +36,12 @@ class CarouselSlider extends HTMLElement {
   }
 
   render() {
-    let elem = {}
+
     let html = document.createElement("div")
+    html.className = "carousel"
+
+
+    let elem = {}
     for (let i = 0; i < this.#data.length; i++) {
       elem = this.#data[i]
 
@@ -66,7 +70,7 @@ class CarouselSlider extends HTMLElement {
 
       img.addEventListener('click', () => {
         window.location.hash='info?id=' + id + '&t=' + type
- m     })
+      })
 
       container.appendChild(img)
       //container.appendChild(popover)
@@ -74,12 +78,85 @@ class CarouselSlider extends HTMLElement {
       html.appendChild(container)
     }
 
-    html.style.display = "flex"
-    html.style.flexDirection = "row"
-    html.style.gap = "1rem"
+    let leftButton = document.createElement("div")
+    leftButton.className = "leftButton"
+    
+    let leftArrow = document.createElement("div")
+    leftArrow.className = "leftArrow"
+    leftButton.appendChild(leftArrow)
+    leftArrow.addEventListener("click", () => {
+      html.scrollBy({ left: -window.innerWidth, top: 0, behavior: 'smooth' })
+    })
 
-    this.#shadow.innerHTML = ""
-    this.#shadow.appendChild(html)
+    let rightButton = document.createElement("div")
+    rightButton.className = "rightButton"
+
+    let rightArrow = document.createElement("div")
+    rightArrow.className = "rightArrow"
+    rightButton.appendChild(rightArrow)
+    rightArrow.addEventListener("click", () => {
+      html.scrollBy({ left: window.innerWidth, top: 0, behavior: 'smooth' })
+    })
+    
+    let finalCont = document.createElement("div")
+    finalCont.className = "carouselCont"
+
+    this.#shadow.innerHTML = `
+      <style>
+        .leftButton, .rightButton {
+          width:300px;
+          height:513px;
+          position:absolute;
+        }
+        .leftButton {
+          background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
+        }
+        .rightButton {
+          margin-left:calc(100vw - 300px);
+          background:linear-gradient(to left, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
+        }
+
+        .leftArrow {
+          border: solid var(--secondary-500);
+          width:50px;
+          height:50px;
+          border-width: 0 10px 10px 0;
+          display: inline-block;
+          margin-top:185px;
+          margin-left:20px;
+          transform: rotate(135deg);
+          -webkit-transform: rotate(135deg);
+        }
+        .rightArrow {
+          border: solid var(--secondary-500);
+          width:50px;
+          height:50px;
+          border-width: 10px 10px 0 0;
+          display: inline-block;
+          margin-top:185px;
+          margin-left:220px;
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+        }
+        .carouselCont {
+          display:flex;
+        }
+        .carousel {
+          display:flex;
+          flex-direction:row;
+          gap:1rem;
+          width:100vw;
+          overflow-x:scroll;
+          scrollbar-width: none
+        }
+      </style>
+    `;
+
+    finalCont.appendChild(leftButton)
+    finalCont.appendChild(html)
+    finalCont.appendChild(rightButton)
+
+    this.#shadow.appendChild(finalCont)
   }
 }
 customElements.define("carousel-slider", CarouselSlider);
