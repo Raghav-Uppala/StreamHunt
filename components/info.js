@@ -36,10 +36,6 @@ class InfoBox extends HTMLElement {
   render() {
     let background = document.createElement("div")
     background.className = "infoBackground"
-    //let cont = document.createElement("div")
-    //background.style.background = "linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), " + url
-    //html.style.backgroundColor = "linear-gradient(to top, transparent, rgba(0, 0, 0, 0.5))"
-    //html.style.backgroundBlendMode = "darken"
     background.style.backgroundPosition = "top right"
     background.style.backgroundRepeat = "no-repeat"
 
@@ -49,7 +45,6 @@ class InfoBox extends HTMLElement {
     } else if (this.#data["poster_path"] != null){
       link += this.#data["poster_path"]
     }
-    console.log(link)
 
     let height;
     try {
@@ -64,22 +59,55 @@ class InfoBox extends HTMLElement {
     container.className = "infoBoxContainer"
 
     let title = document.createElement("h1")
+    title.id = "title"
     title.className = "title"
     if (this.#data["mediaType"] == "m") {
       title.textContent = this.#data["title"] 
-      title.textContent +=  " (" + this.yearFromDate(this.#data["release_date"]) + ")"
     } else if (this.#data["mediaType"] == "s") {
       title.textContent = this.#data["name"] 
-      let last;
+    }
 
+    let titleImg = document.createElement("img")
+    titleImg.id = "titleImg"
+    titleImg.className = "titleImg"
+
+    if (this.#data["mediaType"] == "m") {
+      getMovieImages(this.#data["id"])
+        .then(res => {
+          if (res["logos"].length != 0) {
+            titleImg.src = "https://image.tmdb.org/t/p/w300" + res["logos"][0]["file_path"]
+            this.#shadow.querySelector("#title").replaceWith(titleImg)
+          }
+        })
+    } else if (this.#data["mediaType"] == "s") {
+      getShowImages(this.#data["id"])
+        .then(res => {
+          if (res["logos"].length != 0) {
+            titleImg.src = "https://image.tmdb.org/t/p/w300" + res["logos"][0]["file_path"]
+            this.#shadow.querySelector("#title").replaceWith(titleImg)
+          }
+        })
+    }
+
+    let year = ""
+    if (this.#data["mediaType"] == "m") {
+      year =  this.yearFromDate(this.#data["release_date"])
+    } else if (this.#data["mediaType"] == "s") {
+      let last = ""
       if (this.#data["in_production"] == false) {
         last = this.yearFromDate(this.#data["last_air_date"])
-      } else {
-        last = ""
-      }
+      } 
 
-      title.textContent +=  " (" + this.yearFromDate(this.#data["first_air_date"]) + " - " + last + ")"
+      year =  this.yearFromDate(this.#data["first_air_date"]) + " - " + last
+      if (this.yearFromDate(this.#data["first_air_date"]) == last) {
+        year =  this.yearFromDate(this.#data["first_air_date"])
+      } 
     }
+
+
+    let tagline = document.createElement("h4")
+    tagline.className = "tagline"
+    tagline.textContent = this.#data["tagline"]
     
     let genres = document.createElement("div")
     genres.style.display = "flex"
@@ -94,27 +122,44 @@ class InfoBox extends HTMLElement {
       }
     }
 
-    let cont = document.createElement("div")
+    let yearDiv = document.createElement("div")
+    yearDiv.textContent = year
+    yearDiv.className = "genre"
 
+    let rating = document.createElement("div")
+    rating.textContent = Math.round(this.#data["vote_average"] *10)/10
+    rating.className = "genre"
+
+    let contentRating = document.createElement("div")
+    contentRating.textContent
+    if(this.#data["mediaType"] == "m") {
+      getMovieContentRating(this.#data["id"])
+        .then(res => {
+          contentRating.textContent = res["results"].find(o => o["iso_3166_1"] == "US")["release_dates"][0]["certification"];
+        })
+    } else if(this.#data["mediaType"] == "s") {
+      getShowContentRating(this.#data["id"])
+        .then(res => {
+          contentRating.textContent = res["results"].find(o => o["iso_3166_1"] == "US")["rating"];
+        })
+    }
+    contentRating.className = "genre"
+
+    genres.appendChild(yearDiv)
+    genres.appendChild(rating)
+
+    if (this.#data["mediaType"] == "m") {
+      let runtime = document.createElement("div")
+      runtime.textContent = Math.floor(this.#data["runtime"] / 60) + "h " + this.#data["runtime"] % 60 + "m"
+      runtime.className = "genre"
+      genres.appendChild(runtime)
+    }
+    genres.appendChild(contentRating)
+
+    let cont = document.createElement("div")
     let overview = document.createElement("div")
     overview.className = "desc"
     overview.textContent = this.#data["overview"]
-
-
-    let ratingbar = document.createElement("progress-bar")
-    ratingbar.style.marginTop = "10px"
-
-    let angle = 0
-    let rating = this.#data["vote_average"]
-    if (rating != null) {
-      console.log(rating)
-      angle = rating * 10
-    }
-    ratingbar.setAttribute("data-percent", angle)
-    ratingbar.setAttribute("data-size", "80")
-    ratingbar.setAttribute("data-line", "10")
-
-    cont.appendChild(ratingbar)
     cont.appendChild(overview)
     cont.style.display = "flex"
 
@@ -127,12 +172,12 @@ class InfoBox extends HTMLElement {
     watchNowCont.className = "watchNowCont"
 
     
-    let playTrailer = document.createElement("button")
-    playTrailer.className = "watchNow"
-    playTrailer.textContent = "Watch Trailer" 
-    playTrailer.addEventListener("click", () => {
-      window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
-    })
+    //let playTrailer = document.createElement("button")
+    //playTrailer.className = "watchNow"
+    //playTrailer.textContent = "Watch Trailer" 
+    //playTrailer.addEventListener("click", () => {
+    //  window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
+    //})
     //watchNowCont.appendChild(playTrailer)
 
     let playVidlink = document.createElement("button")
@@ -142,33 +187,11 @@ class InfoBox extends HTMLElement {
       window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
     })
     watchNowCont.appendChild(playVidlink)
+    //details.appendChild(watchNowCont)
 
-    let similarCont = document.createElement("div")
-
-    let similarHeading = document.createElement("h1")
-    similarHeading.textContent = "Similar "
-    similarHeading.className = "similarHeading"
-
-    let similar = document.createElement("carousel-slider")
-
-    if (this.#data["mediaType"] == "m") {
-      similarHeading.textContent += "Movies"
-      getSimilarMovies(this.#data["id"])
-        .then(res => {
-          similar.data = res["results"]
-        })
-    } else if (this.#data["mediaType"] == "s") {
-      similarHeading.textContent += "Shows"
-      getSimilarShows(this.#data["id"])
-        .then(res => {
-          similar.data = res["results"]
-        })
-    }
-
-    similarCont.appendChild(similarHeading)
-    similarCont.appendChild(similar)
 
     container.appendChild(title)
+    //container.appendChild(tagline)
     container.appendChild(genres)
     container.appendChild(cont)
     container.appendChild(watchNowCont)
@@ -177,23 +200,34 @@ class InfoBox extends HTMLElement {
 
     this.#shadow.innerHTML = `
       <style>
-        .similarHeading {
-          color:var(--text-900);
+        .details {
+          display:flex;
+          gap:1rem;
+        }
+        .titleImg {
+          width:500px;
+          margin-bottom:4vh;
+        }
+        .tagline {
+          font-style: italic;
         }
         .desc {
+          width:40vw;
           margin-left:20px;
         }
         .watchNowCont {
           width:100%;
           display:flex;
+          justify-content:left;
           margin-top:1vh;
-          justify-content:center;
         }
         .watchNow {
           background-color:var(--primary-800);
-          border-radius:30px;
+          border-radius:20px;
           padding:5px;
-          width:90px;
+          margin-top:1vh;
+          width:130px;
+          height:40px;
           font-weight:600;
           cursor: pointer;
           transition: all 0.2s ease-in-out;
@@ -211,19 +245,23 @@ class InfoBox extends HTMLElement {
           transform: scale(0.98);
         }
 
+        .genres {
+          display:flex;
+          gap:1vw;
+        }
         .genre {
-          margin-right:1vw;
           background-color:var(--primary-200);
           border-radius:30px;
           margin-bottom:1vh;
           padding:5px 15px;
+          align-content:center;
         }
 
         .infoBoxContainer {
           color:var(--text-900);
           padding:2vh;
-          padding-top:20vh;
-          width:40vw;
+          position:absolute;
+          bottom:0px;
           margin-left:1vw;
         }
 
@@ -232,19 +270,20 @@ class InfoBox extends HTMLElement {
             color:var(--text-900);
             padding:2vh;
             padding-top:20vh;
+          }
+          .desc {
             width:90vw;
-            margin-left:1vw;
           }
         }
 
         .infoBackground {
           background-color:var(--background-50);
           background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 30%, transparent)), url(${link});
+          background-size: 100% auto;
         }
       </style>
     `;
     this.#shadow.appendChild(background)
-    this.#shadow.appendChild(similarCont)
   }
 }
 customElements.define("info-box", InfoBox);

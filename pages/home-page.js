@@ -8,6 +8,7 @@ class HomePage extends HTMLElement {
     this.#shadow = this.attachShadow({ mode: 'open' });
     this.#params = {}
   }
+
   connectedCallback() {
     if (HomePage.cachedData) {
       this.render(HomePage.cachedData);
@@ -35,6 +36,12 @@ class HomePage extends HTMLElement {
   }
 
   render(data) {
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        state["countryName"] = data.country_name;
+        state["countryCode"] = data.country;
+      });
     let carouselM = document.createElement("carousel-slider")
     carouselM.id = "topRatedMovies"
 

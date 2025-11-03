@@ -31,8 +31,7 @@ class EpisodeSelector extends HTMLElement {
 
   updateEpisodes(season, episodeSelector) {
     episodeSelector.innerHTML = ""
-    console.log(this.#data, "Season " + season)
-    let s = this.#data.find(o => o.name == "Season " + season);
+    let s = this.#data.find(o => o["season_number"] == season);
     for (let i = 1; i <= s["episode_count"]; i++) {
       let episode = document.createElement("option")
       episode.value = season + "," + i
@@ -61,9 +60,10 @@ class EpisodeSelector extends HTMLElement {
       seasonSelector.id = "seasonSelector"
 
       for (let i = 0; i < this.#data.length; i++) {
-        if (this.#data[i]["name"].includes("Season")) {
+        console.log(this.#data[i])
+        if (this.#data[i]["season_number"] != 0) {
           let season = document.createElement("option")
-          season.value = this.#data[i]["name"].split(" ")[1]
+          season.value = this.#data[i]["season_number"]
           season.textContent = this.#data[i]["name"]
           seasonSelector.appendChild(season)
         }

@@ -107,6 +107,7 @@ class CarouselSlider extends HTMLElement {
           width:300px;
           height:513px;
           position:absolute;
+          pointer-events: none;
         }
         .leftButton {
           background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
@@ -116,24 +117,23 @@ class CarouselSlider extends HTMLElement {
           background:linear-gradient(to left, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
         }
 
-        .leftArrow {
+        .leftArrow, .rightArrow {
           border: solid var(--secondary-500);
           width:50px;
           height:50px;
-          border-width: 0 10px 10px 0;
           display: inline-block;
           margin-top:185px;
+          cursor: pointer;
+          pointer-events: auto;
+        }
+        .leftArrow {
+          border-width: 0 10px 10px 0;
           margin-left:20px;
           transform: rotate(135deg);
           -webkit-transform: rotate(135deg);
         }
         .rightArrow {
-          border: solid var(--secondary-500);
-          width:50px;
-          height:50px;
           border-width: 10px 10px 0 0;
-          display: inline-block;
-          margin-top:185px;
           margin-left:220px;
           transform: rotate(45deg);
           -webkit-transform: rotate(45deg);
