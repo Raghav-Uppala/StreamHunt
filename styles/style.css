@@ -2,3 +2,27 @@
   background-color: var(--background-50);
   color:var(--text-50);
 }
+
+:root {
+  font-family: "Inter", Arial, sans-serif;
+}
+
+ /* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--background-50);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-500);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

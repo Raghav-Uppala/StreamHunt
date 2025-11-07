@@ -22,6 +22,7 @@ class InfoPage extends HTMLElement {
     window.scrollTo(0, 0);
     let info = document.createElement("info-box")
     let watchProviders = document.createElement("watch-providers")
+    let creditsCont = document.createElement("div")
     let similarCont = document.createElement("div")
 
     if (this.#params["id"] != null) {
@@ -62,6 +63,28 @@ class InfoPage extends HTMLElement {
             similar.data = res["results"]
           })
       }
+
+      let creditsHeading = document.createElement("h1") 
+      creditsHeading.textContent = "Credits"
+
+      let credits = document.createElement("credits-list")
+      if (this.#params["t"] == "m") {
+        getMovieCredits(this.#params["id"])
+          .then(res => {
+            let modData = res
+            modData["mediaType"] = "m"
+            credits.data = res
+          })
+      } else if (this.#params["t"] == "s") {
+        getShowCredits(this.#params["id"])
+          .then(res => {
+            let modData = res
+            modData["mediaType"] = "s"
+            credits.data = res
+          })
+      }
+      creditsCont.appendChild(creditsHeading)
+      creditsCont.appendChild(credits)
     }
 
 
@@ -76,6 +99,7 @@ class InfoPage extends HTMLElement {
       </style>
     `;
     this.#shadow.appendChild(info)
+    this.#shadow.appendChild(creditsCont)
     this.#shadow.appendChild(watchProviders)
     this.#shadow.appendChild(similarCont)
   }

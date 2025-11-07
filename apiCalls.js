@@ -6,8 +6,16 @@ const options = {
   }
 };
 
+// Movie API calls
+
 async function getTopRatedMovies() {
   return fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+async function getPopularMovies() {
+  return fetch("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1", options)
     .then(res => res.json())
     .catch(err => console.error(err));
 }
@@ -54,6 +62,15 @@ async function getMovieContentRating(id) {
     .catch(err => console.error(err))
 } 
 
+async function getMovieCredits(id) {
+  return fetch("https://api.themoviedb.org/3/movie/" + id + "/credits?language=en-US", options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}
+
+
+
+// Show API calls
 
 async function getTopRatedShows() {
   return fetch("https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1", options)
@@ -61,8 +78,28 @@ async function getTopRatedShows() {
     .catch(err => console.error(err));
 }
 
+async function getPopularShows() {
+  return fetch("https://api.themoviedb.org/3/tv/popular?language=en-US&page=1", options)
+    .then(res => res.json())
+    .catch(err => console.error(err));
+}
+
+
 async function getShowById(id) {
   return fetch("https://api.themoviedb.org/3/tv/" + id, options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}
+
+async function getShowSeasonsById(id, seasons) {
+  let seasonAppend = ""
+  for (let i = 0; i < seasons; i++) {
+    if (i != 0 ) {
+      seasonAppend += ","
+    }
+    seasonAppend += "season/" + (i+1)
+  }
+  return fetch("https://api.themoviedb.org/3/tv/" + id + "?append_to_response=" + seasonAppend, options)
     .then(res => res.json())
     .catch(err => console.error(err))
 }
@@ -96,3 +133,9 @@ async function getShowContentRating(id) {
     .then(res => res.json())
     .catch(err => console.error(err))
 } 
+
+async function getShowCredits(id) {
+  return fetch("https://api.themoviedb.org/3/tv/" + id + "/aggregate_credits?language=en-US", options)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}

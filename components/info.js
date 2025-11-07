@@ -4,10 +4,7 @@ class InfoBox extends HTMLElement {
   #genres;
 
   constructor() {
-    super();
-    this.#shadow = this.attachShadow({ mode: 'open' });
-    this.#data = [];
-    this.#genres = [];
+    super(); this.#shadow = this.attachShadow({ mode: 'open' }); this.#data = []; this.#genres = [];
     this.render();
   }
 
@@ -53,7 +50,7 @@ class InfoBox extends HTMLElement {
       height = "0"
     }
 
-    background.style.height = "calc(100vh - " + height + "px)"
+    //background.style.height = "calc(100vh - " + height + "px)"
 
     let container = document.createElement("div")
     container.className = "infoBoxContainer"
@@ -130,12 +127,23 @@ class InfoBox extends HTMLElement {
     rating.textContent = Math.round(this.#data["vote_average"] *10)/10
     rating.className = "genre"
 
+    let language = document.createElement("div")
+    if (this.#data["original_language"] != undefined) {
+      language.textContent = this.#data["original_language"].toUpperCase()
+    }
+    language.className = "genre"
+
     let contentRating = document.createElement("div")
     contentRating.textContent
     if(this.#data["mediaType"] == "m") {
       getMovieContentRating(this.#data["id"])
         .then(res => {
-          contentRating.textContent = res["results"].find(o => o["iso_3166_1"] == "US")["release_dates"][0]["certification"];
+          let rating = res["results"].find(o => o["iso_3166_1"] == "US")["release_dates"]
+          for (let i = 0; i < rating.length; i++) {
+            if (rating[i]["certification"] != "") {
+              contentRating.textContent = res["results"].find(o => o["iso_3166_1"] == "US")["release_dates"][i]["certification"];
+            }
+          }
         })
     } else if(this.#data["mediaType"] == "s") {
       getShowContentRating(this.#data["id"])
@@ -155,6 +163,7 @@ class InfoBox extends HTMLElement {
       genres.appendChild(runtime)
     }
     genres.appendChild(contentRating)
+    genres.appendChild(language)
 
     let cont = document.createElement("div")
     let overview = document.createElement("div")
@@ -189,7 +198,19 @@ class InfoBox extends HTMLElement {
     watchNowCont.appendChild(playVidlink)
     //details.appendChild(watchNowCont)
 
+    let backArrow = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:30px;"><path fill="white" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>`
 
+    let backArrowCont = document.createElement("div")
+    backArrowCont.innerHTML = backArrow
+    backArrowCont.className = "backArrowCont"
+
+    backArrowCont.addEventListener("click", () => {
+      history.back()
+    });
+
+
+
+    container.appendChild(backArrowCont)
     container.appendChild(title)
     //container.appendChild(tagline)
     container.appendChild(genres)
@@ -200,6 +221,47 @@ class InfoBox extends HTMLElement {
 
     this.#shadow.innerHTML = `
       <style>
+        .backArrowCont {
+          position:absolute;
+          top:0;
+          bottom:0;
+          height:30px;
+          width:30px;
+          padding-right:30px;
+          cursor:pointer;
+          margin-top:3vh;
+        }
+        .backArrow {
+          background:var(--light-background-50);
+          height: 3px;
+          width: 30px;
+          position: relative;
+          margin-top:3vh;
+          margin-left:1vw;
+          cursor: pointer;
+          transform:rotate(180deg);
+          &:before,
+          &:after {
+            content: "";
+            background: var(--light-background-50);
+            position: absolute;
+            height: 3px;
+            width: 15px;
+          }
+        
+          &:before {
+            right: -3px;
+            bottom: -4px;
+            transform: rotate(-45deg);
+          }
+        
+          &:after {
+            right: -3px;
+            top: -4px;
+            transform: rotate(45deg);
+          }
+        }
+
         .details {
           display:flex;
           gap:1rem;
@@ -254,14 +316,11 @@ class InfoBox extends HTMLElement {
           border-radius:30px;
           margin-bottom:1vh;
           padding:5px 15px;
-          align-content:center;
         }
 
         .infoBoxContainer {
           color:var(--text-900);
           padding:2vh;
-          position:absolute;
-          bottom:0px;
           margin-left:1vw;
         }
 
@@ -278,9 +337,18 @@ class InfoBox extends HTMLElement {
 
         .infoBackground {
           background-color:var(--background-50);
-          background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 30%, transparent)), url(${link});
-          background-size: 100% auto;
+          height:;
+          background:
+            linear-gradient(to right, var(--background-50), color-mix(in srgb, var(--background) 0%, transparent)),
+            /*linear-gradient(to top, color-mix(in srgb, var(--background-50) 80%, transparent), color-mix(in srgb, var(--background-50) 0%, transparent)),*/
+            url(${link});
+          background-blend-mode: multiply;
+          background-size: 100vw calc(100vw * (1045/1920));
+          height:calc(100vw * (1045/1920));
+          display:flex;
+          flex-direction:column-reverse;
         }
+        @import url('https://fonts.googleapis.com/css?family=Inter:700|Inter:400');
       </style>
     `;
     this.#shadow.appendChild(background)

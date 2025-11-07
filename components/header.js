@@ -18,10 +18,10 @@ class CustomHeader extends HTMLElement {
 
   render() {
     let prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setDarkTheme(prefersDark)
+    setDarkTheme(true)
 
     let container = document.createElement("div")
-    container.id = "header"
+    container.id = "container"
     container.style.display = "flex"
 
     const sunIcon = `
@@ -62,7 +62,62 @@ class CustomHeader extends HTMLElement {
       themeSwitcher.style.backgroundColor = 'initial';
     });
 
+    let searchBarCont = document.createElement("div")
+    searchBarCont.className = "searchBarCont"
+
+    let searchIcon = document.createElement("button")
+    searchIcon.innerHTML = `<svg class="searchIconSvg" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">A magnifying glass icon.</desc><g class="search-path" fill="none" stroke="#848F91"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg>`
+    searchIcon.setAttribute("aria-pressed", "false")
+    searchIcon.className = "searchIcon"
+
+    searchIcon.addEventListener("click", ()=>{
+      const pressed = searchIcon.getAttribute("aria-pressed") === "true";
+      searchIcon.setAttribute("aria-pressed", !pressed);
+
+     if (!pressed) {
+        // open
+        searchBarCont.insertBefore(searchBar, searchIcon);
+        void searchBar.offsetWidth;
+        requestAnimationFrame(() => {
+          searchBar.classList.add("open");
+        });
+        searchBar.focus();
+        searchBar.addEventListener(
+          "blur",
+          () => {
+            searchBar.classList.remove("open");
+            searchIcon.setAttribute("aria-pressed", "false");
+
+            // wait for animation to finish before removing
+            searchBar.addEventListener(
+              "transitionend",
+              () => {
+                if (searchBar.parentElement) {
+                  searchBarCont.removeChild(searchBar);
+                }
+              },
+              { once: true }
+            );
+          },
+          { once: true } // ensures the blur listener runs only once
+        );
+      } else {
+        // close (wait for transition to finish before removing)
+        searchBar.classList.remove("open");
+        searchBar.addEventListener(
+          "transitionend",
+          () => {
+            if (searchBar.parentElement) {
+              searchBarCont.removeChild(searchBar);
+            }
+          },
+          { once: true }
+        );
+      }
+    }); 
+
     let searchBar = document.createElement("input")
+    searchBar.className = "searchBar"
 
 
     searchBar.addEventListener("keypress", (e) => {
@@ -70,13 +125,78 @@ class CustomHeader extends HTMLElement {
         this.search(searchBar.value)
       }
     })
+
+
+
+    searchBarCont.appendChild(searchIcon)
     
-    container.appendChild(themeSwitcher);
-    container.appendChild(searchBar)
+    //container.appendChild(themeSwitcher);
+    container.appendChild(searchBarCont)
     
 
     this.#shadow.innerHTML = `
       <style>
+        .searchIcon {
+          background-color:transparent;
+          border:none;
+          border-radius:10px;
+          padding:10px;
+          margin-top:10px;
+          margin-right:10px;
+          align-items:center;
+
+          &:hover {
+            background-color:var(--primary-100);
+          }
+        }
+
+        .searchIcon:hover .search-path {
+          stroke:var(--secondary-500);
+        }
+
+        .searchIconSvg {
+          display: inline-block;
+          width: 30px;
+          height: 30px;
+
+          & .search-path {
+            stroke:white;
+          }
+        }
+        .searchBar {
+          height:20px;
+          width: 0;
+          opacity: 0;
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: all 0.3s ease;
+          border:none;
+          border-bottom: 1px solid #ccc;
+          border-radius: 4px;
+          padding: 4px 8px;
+          background-color:transparent;
+          color:var(--text-900);
+
+          &:focus {
+            outline:none;
+          }
+        }
+        .searchBar.open {
+          width: 200px;
+          opacity: 1;
+          transform: scaleX(1);
+        }
+        .searchBarCont {
+          display:flex;
+          align-items:center;
+          flex-direction:row;
+        }
+        #container {
+          display:flex;
+          flex-direction:row-reverse;
+          align-items:center;
+          height:50px;
+        }
       </style>
       `;
     this.#shadow.appendChild(container);

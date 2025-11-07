@@ -1,13 +1,11 @@
 class CarouselSlider extends HTMLElement {
   #shadow;
   #data;
-  #genres;
 
   constructor() {
     super();
     this.#shadow = this.attachShadow({ mode: 'open' });
     this.#data = [];
-    this.#genres = []
     this.render();
   }
 
@@ -15,25 +13,11 @@ class CarouselSlider extends HTMLElement {
     return this.#data;
   }
 
-  get genres() {
-    return this.#genres;
-  }
-  
   set data(value) {
     this.#data = structuredClone(value);
     this.render();
   }
 
-  set genres(value) {
-    this.#genres = structuredClone(value);
-    this.render();
-  }
-
-  updateDG(data, genres) {
-    this.#data = structuredClone(data);
-    this.#genres = structuredClone(genres);
-    this.render();
-  }
 
   render() {
 
@@ -44,21 +28,14 @@ class CarouselSlider extends HTMLElement {
     let elem = {}
     for (let i = 0; i < this.#data.length; i++) {
       elem = this.#data[i]
-
+      
       let type = "m"
       if (elem.hasOwnProperty("first_air_date")) {
         type = "s"
       }
 
       let container = document.createElement("div")
-
-      //let popover = document.createElement("info-box")
-      //popover.genres = this.#genres
-      //popover.data = elem
-      //popover.id = elem["id"] + "popover"
-      //popover.popover = "auto"
-      //popover.style.padding = 0
-      //popover.style.border = "none"
+      container.className = "carouselItem"
 
       let img = document.createElement("img")
       img.src = 'https://image.tmdb.org/t/p/w342/' + elem["poster_path"]
@@ -67,8 +44,7 @@ class CarouselSlider extends HTMLElement {
       }
       //img.setAttribute("popovertarget", elem["id"] + "popover")
       let id = elem["id"]
-
-      img.addEventListener('click', () => {
+img.addEventListener('click', () => {
         window.location.hash='info?id=' + id + '&t=' + type
       })
 
@@ -110,10 +86,11 @@ class CarouselSlider extends HTMLElement {
           pointer-events: none;
         }
         .leftButton {
+          left:0;
           background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
         }
         .rightButton {
-          margin-left:calc(100vw - 300px);
+          right:0;
           background:linear-gradient(to left, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
         }
 
@@ -142,12 +119,16 @@ class CarouselSlider extends HTMLElement {
           display:flex;
         }
         .carousel {
+          wdith:100dvw;
           display:flex;
           flex-direction:row;
           gap:1rem;
-          width:100vw;
+          width:100dwv;
           overflow-x:scroll;
-          scrollbar-width: none
+          scrollbar-width: none;
+        }
+        .carouselCont {
+          cursor:pointer;
         }
       </style>
     `;

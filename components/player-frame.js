@@ -24,6 +24,8 @@ class PlayerFrame extends HTMLElement {
 
   render() {
     let iframe = document.createElement("iframe")
+    iframe.setAttribute("referrerpolicy", "no-referrer")
+
     let link = ""
     if (this.#data["p"] == "v") {
       let type = "movie"

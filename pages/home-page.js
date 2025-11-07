@@ -10,6 +10,7 @@ class HomePage extends HTMLElement {
   }
 
   connectedCallback() {
+    HomePage.cachedData = JSON.parse(localStorage.getItem("homePageData"))
     if (HomePage.cachedData) {
       this.render(HomePage.cachedData);
     } else {
@@ -18,10 +19,11 @@ class HomePage extends HTMLElement {
   }
 
   fetchData() {
-    let data = [getTopRatedMovies(), getTopRatedShows()]
+    let data = [getTopRatedMovies(), getTopRatedShows(), getPopularMovies(), getPopularShows()]
     Promise.all(data)
       .then((res) => {
         HomePage.cachedData = res
+        localStorage.setItem("homePageData", JSON.stringify(res));
       })
     this.render(data)
   }
@@ -42,28 +44,64 @@ class HomePage extends HTMLElement {
         state["countryName"] = data.country_name;
         state["countryCode"] = data.country;
       });
-    let carouselM = document.createElement("carousel-slider")
-    carouselM.id = "topRatedMovies"
 
-    let carouselS = document.createElement("carousel-slider")
-    carouselS.id = "topRatedShows"
+    let carouselTM = document.createElement("carousel-slider")
+    carouselTM.id = "topRatedMovies"
+    let headingTM = document.createElement("h1")
+    headingTM.textContent = "Top Rated Movies"
 
-    this.#shadow.innerHTML = "<custom-header></custom-header>"
-    this.#shadow.appendChild(carouselM)
-    this.#shadow.appendChild(carouselS)
+    let carouselTS = document.createElement("carousel-slider")
+    carouselTS.id = "topRatedShows"
+    let headingTS = document.createElement("h1")
+    headingTS.textContent = "Top Rated Shows"
+
+    let carouselPM = document.createElement("carousel-slider")
+    carouselTS.id = "popularMovies"
+    let headingPM = document.createElement("h1")
+    headingPM.textContent = "Popular Movies"
+
+    let carouselPS = document.createElement("carousel-slider")
+    carouselPS.id = "popularShows"
+    let headingPS = document.createElement("h1")
+    headingPS.textContent = "Popular Shows"
+
+    this.#shadow.innerHTML = `
+      <custom-header></custom-header>
+      <style>
+        h1 {
+          color:var(--text-950);
+        }
+      </style>
+    `;
+
+    this.#shadow.appendChild(headingPM)
+    this.#shadow.appendChild(carouselPM)
+    this.#shadow.appendChild(headingPS)
+    this.#shadow.appendChild(carouselPS)
+    this.#shadow.appendChild(headingTM)
+    this.#shadow.appendChild(carouselTM)
+    this.#shadow.appendChild(headingTS)
+    this.#shadow.appendChild(carouselTS)
 
     Promise.resolve(data[0])
       .then((results) => {
-        console.log(results)
-        carouselM.data = results["results"]
+        carouselTM.data = results["results"]
       })
 
     Promise.resolve(data[1])
       .then((results) => {
-        console.log(results)
-        carouselS.data = results["results"]
+        carouselTS.data = results["results"]
       })
 
+    Promise.resolve(data[2])
+      .then((results) => {
+        carouselPM.data = results["results"]
+      })
+
+    Promise.resolve(data[3])
+      .then((results) => {
+        carouselPS.data = results["results"]
+      })
   }
 }
 customElements.define("home-page", HomePage);

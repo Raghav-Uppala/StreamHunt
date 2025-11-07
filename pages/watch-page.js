@@ -46,16 +46,26 @@ class WatchPage extends HTMLElement {
       player.data = modData
     });
 
-    this.#shadow.innerHTML = ""
-    this.#shadow.appendChild(player)
-    this.#shadow.appendChild(serverSelector)
+    let details = document.createElement("div")
+    details.className = "details"
 
+    details.appendChild(serverSelector)
     if (this.#params["t"] == "s") {
       let episodeSelector = document.createElement("episode-selector")
       episodeSelector.episode = {"season":this.#params["s"], "episode":this.#params["e"]} 
       getShowById(this.#params["id"])
         .then(res => {
           episodeSelector.data = res["seasons"]
+          getShowSeasonsById(this.#params["id"], res["number_of_seasons"])
+            .then(results => {
+              let data = []
+              for (let i = 0; i < res["number_of_seasons"]; i++) {
+                data.push(results["season/" + (i+1)])
+                data[i]["season_number"] = i + 1
+                data[i]["episode_count"] = data[i]["episodes"].length 
+              }
+              episodeSelector.data = data
+            })
         })
 
       episodeSelector.addEventListener("new-episode", (e) => {
@@ -63,8 +73,20 @@ class WatchPage extends HTMLElement {
         episodeSelector.episode = {"season":e.detail.season, "episode":e.detail.episode} 
       });
 
-      this.#shadow.appendChild(episodeSelector)
+      details.appendChild(episodeSelector)
     }
+
+    this.#shadow.innerHTML = `
+      <style>
+        .details {
+          display:flex;
+          justify-content:space-between;
+        }
+      </style>
+    `;
+    this.#shadow.appendChild(player)
+    this.#shadow.appendChild(details)
+
   }
 }
 customElements.define("watch-page", WatchPage);

@@ -23,7 +23,6 @@ class ProgressBar extends HTMLElement {
     }
 
     let fontSize = options.size/4
-    
     let canvas = document.createElement('canvas');
     let span = document.createElement('span');
     span.textContent = Math.round(options.percent);
