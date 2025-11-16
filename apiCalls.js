@@ -92,16 +92,39 @@ async function getShowById(id) {
 }
 
 async function getShowSeasonsById(id, seasons) {
-  let seasonAppend = ""
-  for (let i = 0; i < seasons; i++) {
-    if (i != 0 ) {
-      seasonAppend += ","
+  let promise = []
+
+  for (let p = 1; p <= Math.ceil(seasons/20); p++) {
+    let max = 20 + (p-1) * 20
+    if (p == Math.ceil(seasons/20)) {
+      max = seasons
     }
-    seasonAppend += "season/" + (i+1)
+    let seasonAppend = ""
+    for (let i = (p-1)*20; i < max; i++) {
+      if (i != 0 ) {
+        seasonAppend += ","
+      }
+      seasonAppend += "season/" + (i+1)
+    }
+    promise.push(fetch("https://api.themoviedb.org/3/tv/" + id + "?append_to_response=" + seasonAppend, options))
   }
-  return fetch("https://api.themoviedb.org/3/tv/" + id + "?append_to_response=" + seasonAppend, options)
-    .then(res => res.json())
+  return Promise.all(promise)
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(dataArray => {
+      let newData = dataArray[0]
+      if (dataArray.length > 1) {
+        for (let i = 1; i < dataArray.length; i++) {
+          Object.entries(dataArray[i]).map(entry => {
+            if (entry[0].split("/")[0] == "season") {
+              newData[entry[0]] = entry[1]
+            }
+          });
+        }
+      }
+      return newData
+    })    
     .catch(err => console.error(err))
+
 }
 
 async function getShowByName(name) {
@@ -138,4 +161,49 @@ async function getShowCredits(id) {
   return fetch("https://api.themoviedb.org/3/tv/" + id + "/aggregate_credits?language=en-US", options)
     .then(res => res.json())
     .catch(err => console.error(err))
+}
+
+
+// User related calls 
+
+async function userGetShows() {
+  console.log("hello")
+  try {
+    const [status, showCollection] = await firebaseGetCollection("Shows")
+    if (showCollection == "empty") {
+      setState("shows", "empty")
+      return ["error", null]
+    } else {
+      let data = {}
+      showCollection.forEach(doc => {
+        data[doc.id] = doc.data();
+      });
+      setState("shows", data)
+      return ["success", data]
+    }
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+async function userUpdateShow(id, ep, season) {
+  try {
+    const showCollection = await firebaseUpdateDocCollection("Shows", {"episode" : ep, "season" : season}, id)
+    let newState = state["shows"]
+    newState[id] = {"episode" : ep, "season" : season}
+    setState("shows", newState)
+    return showCollection
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+async function userAddShow(id, ep, season) {
+  try {
+    const showCollection = await firebaseAddToCollection("Shows", {"episode" : ep, "season" : season}, id)
+    console.log(showCollection)
+    return showCollection
+  } catch (error) {
+    return ["error", error]
+  }
 }
