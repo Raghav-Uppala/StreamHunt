@@ -5,7 +5,7 @@ class WatchPage extends HTMLElement {
   constructor() {
     super();
     this.#shadow = this.attachShadow({ mode: 'open' });
-    this.#params = {"p": "1","t":"m", "id": "2", "notLoaded": false}
+    this.#params = {"p": "1","t":"m", "id": "2"}
     this.render();
   }
 
@@ -58,7 +58,6 @@ class WatchPage extends HTMLElement {
           episodeSelector.data = res["seasons"]
           getShowSeasonsById(this.#params["id"], res["number_of_seasons"])
             .then(results => {
-              console.log(results)
               let data = []
               for (let i = 0; i < res["number_of_seasons"]; i++) {
                 data.push(results["season/" + (i+1)])
@@ -69,45 +68,13 @@ class WatchPage extends HTMLElement {
             })
         })
 
-      
       episodeSelector.addEventListener("new-episode", (e) => {
         window.location.hash = "#watch?id=" + this.#params["id"] + "&t=s&s=" + e.detail.season + "&e=" + e.detail.episode
-        if (state["shows"] && state["shows"][this.#params["id"]]) {
-          userUpdateShow(this.#params["id"], e.detail.episode, e.detail.season*1).then(res => console.log(res))
-        }
-        episodeSelector.episode = {"season":e.detail.season*1, "episode":e.detail.episode} 
+        episodeSelector.episode = {"season":e.detail.season, "episode":e.detail.episode} 
       });
 
       details.appendChild(episodeSelector)
     }
-
-    let updateTimer = null
-    function addDoc(params) {
-      updateTimer = setTimeout(async () => {
-        userAddShow(params["id"], params["e"], params["s"])
-      }, 10000)
-    }
-
-    function cancel() {
-      if (updateTimer) {
-        console.log("canceled")
-        clearTimeout(updateTimer)
-        updateTimer = null
-      }
-    }
-
-    if (state["shows"] && !(this.#params["id"] in state["shows"])) {
-      if(!("notLoaded" in this.#params) && this.#params["e"] != 1) {
-        addDoc(this.#params)
-      }
-    }
-
-    let backButton = document.createElement("button")
-    backButton.textContent = "go back"
-    backButton.addEventListener("click", () => {
-      window.location.hash = "#info?id=" + this.#params["id"] + "&t=s"
-      cancel()
-    })
 
     this.#shadow.innerHTML = `
       <style>
@@ -119,7 +86,6 @@ class WatchPage extends HTMLElement {
     `;
     this.#shadow.appendChild(player)
     this.#shadow.appendChild(details)
-    this.#shadow.appendChild(backButton)
 
   }
 }

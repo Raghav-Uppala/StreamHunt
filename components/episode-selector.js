@@ -95,12 +95,7 @@ class EpisodeSelector extends HTMLElement {
   }
 
   render() {
-    if (this.#data.length != 0) { 
-      let nextEpisode = document.createElement("button")
-      nextEpisode.className = "nextEpisode"
-      nextEpisode.textContent = "Next Episode"
-
-      let container = document.createElement("div")
+    if (this.#data.length != 0) { let container = document.createElement("div")
       container.className = "container"
 
       let selectorButton = document.createElement("button")
@@ -144,24 +139,6 @@ class EpisodeSelector extends HTMLElement {
         }
       }
 
-      nextEpisode.addEventListener("click", () => {
-        let nextep = this.#episode["episode"]
-        let nexts = this.#episode["season"] 
-        if (seasons[this.#episode["season"]]["episode_count"] > this.#episode["episode"]) {
-          nextep = +this.#episode["episode"] + 1
-          nexts = this.#episode["season"]
-        } else {
-          if (Object.keys(seasons).length > this.#episode["season"]) {
-            nextep = 1
-            nexts = +this.#episode["season"] + 1
-          }
-        }
-        this.dispatchEvent(new CustomEvent("new-episode", {
-          detail: { season: nexts, episode: nextep },
-          bubbles: true,
-          composed: true
-        }));
-      })
 
 
       this.#shadow.innerHTML = `
@@ -223,11 +200,6 @@ class EpisodeSelector extends HTMLElement {
         </style>
       `;
       container.appendChild(selectorButton)
-      if (this.#data.length != 0) {
-        if (this.#episode["season"] != Object.keys(seasons).length || this.#episode["episode"] != seasons[this.#episode["season"]]["episode_count"]) {
-          container.appendChild(nextEpisode)
-        }
-      }
       this.#shadow.appendChild(container)
       //this.#shadow.appendChild(seasonSelector)
       //this.#shadow.appendChild(episodeSelector)

@@ -127,34 +127,10 @@ class CustomHeader extends HTMLElement {
     })
 
 
-    let loginform = document.createElement("signup-form")
-    loginform.setAttribute("popover", "auto")
-    loginform.id = "loginForm"
-
-    let openButton = document.createElement("button")
-    openButton.textContent = "login"
-    openButton.setAttribute("popovertarget", "loginForm")
-
-    stateListener.addEventListener("update-signedIn", (e) => {
-      if (e.detail.value == true) {
-        openButton.textContent = "logout"
-        openButton.setAttribute("popovertarget", "")
-        openButton.addEventListener("click", () => {
-          firebaseSignOut()
-        }, { once: true })
-      } else if (e.detail.value == false) {
-        openButton.textContent = "Login"
-        openButton.setAttribute("popovertarget", "loginForm")
-      }
-    })
-
-    stateListener.addEventListener("update-user", () => {userGetShows()})
 
     searchBarCont.appendChild(searchIcon)
     
     //container.appendChild(themeSwitcher);
-    container.appendChild(loginform)
-    container.appendChild(openButton)
     container.appendChild(searchBarCont)
     
 

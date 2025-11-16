@@ -172,48 +172,15 @@ class InfoBox extends HTMLElement {
     cont.appendChild(overview)
     cont.style.display = "flex"
 
+    let seasonNum = ""
+    if (this.#data["mediaType"] == "s") {
+      seasonNum = "&s=1&e=1"
+    }
 
     let watchNowCont = document.createElement("div")
     watchNowCont.className = "watchNowCont"
 
     
-
-    let playVidlink = document.createElement("button")
-    playVidlink.className = "watchNow"
-    playVidlink.textContent = "Watch Now" 
-
-    let seasonNum = ""
-    if (this.#data["mediaType"] == "s") {
-      let season = 1
-      let episode = 1
-      if (state["shows"] != null) {
-        if (this.#data["id"] in state["shows"]) {
-          season = state["shows"][this.#data["id"]]["season"]
-          episode = state["shows"][this.#data["id"]]["episode"]
-        }       
-      } else {
-        stateListener.addEventListener("update-shows", () => {
-          if (this.#data["id"] in state["shows"]) {
-            season = state["shows"][this.#data["id"]]["season"]
-            episode = state["shows"][this.#data["id"]]["episode"]
-            seasonNum = "&s=" + season + "&e=" + episode
-            console.log(seasonNum)
-            playVidlink.addEventListener("click", () => {
-              window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
-            })
-          }
-        }, {once : true})
-      }
-      console.log(seasonNum)
-      seasonNum = "&s=" + season + "&e=" + episode
-    }
-
-    playVidlink.addEventListener("click", () => {
-      window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
-    })
-    watchNowCont.appendChild(playVidlink)
-
-    //details.appendChild(watchNowCont)
     //let playTrailer = document.createElement("button")
     //playTrailer.className = "watchNow"
     //playTrailer.textContent = "Watch Trailer" 
@@ -222,6 +189,15 @@ class InfoBox extends HTMLElement {
     //})
     //watchNowCont.appendChild(playTrailer)
 
+    let playVidlink = document.createElement("button")
+    playVidlink.className = "watchNow"
+    playVidlink.textContent = "Watch Now" 
+    playVidlink.addEventListener("click", () => {
+      window.location.hash = "watch?id="+this.#data["id"] + "&t=" + this.#data["mediaType"] + seasonNum
+    })
+    watchNowCont.appendChild(playVidlink)
+    //details.appendChild(watchNowCont)
+
     let backArrow = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:30px;"><path fill="white" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>`
 
     let backArrowCont = document.createElement("div")
@@ -229,8 +205,10 @@ class InfoBox extends HTMLElement {
     backArrowCont.className = "backArrowCont"
 
     backArrowCont.addEventListener("click", () => {
-      window.location.hash = "#"
+      history.back()
     });
+
+
 
     container.appendChild(backArrowCont)
     container.appendChild(title)
