@@ -27,7 +27,7 @@ async function getMovieGenreIds() {
 }
 
 async function getMovieById(id) {
-  return fetch("https://api.themoviedb.org/3/movie/" + id, options)
+  return fetch("https://api.themoviedb.org/3/movie/" + id + "?append_to_response=videos", options)
     .then(res => res.json())
     .catch(err => console.error(err))
 }
@@ -86,7 +86,7 @@ async function getPopularShows() {
 
 
 async function getShowById(id) {
-  return fetch("https://api.themoviedb.org/3/tv/" + id, options)
+  return fetch("https://api.themoviedb.org/3/tv/" + id + "?append_to_response=videos", options)
     .then(res => res.json())
     .catch(err => console.error(err))
 }
@@ -167,7 +167,6 @@ async function getShowCredits(id) {
 // User related calls 
 
 async function userGetShows() {
-  console.log("hello")
   try {
     const [status, showCollection] = await firebaseGetCollection("Shows")
     if (showCollection == "empty") {

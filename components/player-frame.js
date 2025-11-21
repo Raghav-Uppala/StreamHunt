@@ -65,7 +65,15 @@ class PlayerFrame extends HTMLElement {
       } else if (this.#data["t"] == "s") {
         link += "tv/" + this.#data["id"] + "/" + this.#data["s"] + "/" + this.#data["e"]
       }
+    } else if (this.#data["p"] == "i") {
+      link = "https://vidsrc.icu/embed/"
+      if (this.#data["t"] == "m") {
+        link += "movie/" + this.#data["id"]
+      } else if (this.#data["t"] == "s") {
+        link += "tv/" + this.#data["id"] + "/" + this.#data["s"] + "/" + this.#data["e"]
+      }
     }
+    console.log(link)
     iframe.src = link
     iframe.setAttribute("allowfullscreen", "")
     iframe.setAttribute("frameborder", "0")

@@ -17,10 +17,7 @@ class CarouselSlider extends HTMLElement {
     this.#data = structuredClone(value);
     this.render();
   }
-
-
   render() {
-
     let html = document.createElement("div")
     html.className = "carousel"
 
@@ -44,7 +41,7 @@ class CarouselSlider extends HTMLElement {
       }
       //img.setAttribute("popovertarget", elem["id"] + "popover")
       let id = elem["id"]
-img.addEventListener('click', () => {
+      img.addEventListener('click', () => {
         window.location.hash='info?id=' + id + '&t=' + type
       })
 
@@ -61,7 +58,7 @@ img.addEventListener('click', () => {
     leftArrow.className = "leftArrow"
     leftButton.appendChild(leftArrow)
     leftArrow.addEventListener("click", () => {
-      html.scrollBy({ left: -window.innerWidth, top: 0, behavior: 'smooth' })
+      html.scrollBy({ left: -window.innerWidth * 0.8, top: 0, behavior: 'smooth' })
     })
 
     let rightButton = document.createElement("div")
@@ -71,7 +68,7 @@ img.addEventListener('click', () => {
     rightArrow.className = "rightArrow"
     rightButton.appendChild(rightArrow)
     rightArrow.addEventListener("click", () => {
-      html.scrollBy({ left: window.innerWidth, top: 0, behavior: 'smooth' })
+      html.scrollBy({ left: window.innerWidth * 0.8, top: 0, behavior: 'smooth' })
     })
     
     let finalCont = document.createElement("div")
@@ -81,25 +78,23 @@ img.addEventListener('click', () => {
       <style>
         .leftButton, .rightButton {
           width:300px;
-          height:513px;
+          height:calc(185px*1.5);
           position:absolute;
           pointer-events: none;
+          align-content: center;
+          z-index:99999;
         }
         .leftButton {
           left:0;
-          background:linear-gradient(to right, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
         }
         .rightButton {
           right:0;
-          background:linear-gradient(to left, color-mix(in srgb, var(--background-50) 100%, transparent), color-mix(in srgb, var(--background-50) 00%, transparent));
         }
 
         .leftArrow, .rightArrow {
           border: solid var(--secondary-500);
           width:50px;
           height:50px;
-          display: inline-block;
-          margin-top:185px;
           cursor: pointer;
           pointer-events: auto;
         }
@@ -116,8 +111,20 @@ img.addEventListener('click', () => {
           -webkit-transform: rotate(45deg);
         }
         .carouselCont {
+          cursor:pointer;
           display:flex;
         }
+        .carouselCont img {
+          width:185px;
+          height:calc(185px*1.5);
+          opacity:1;
+          trasition:opacity 0.3s ease;
+        }
+
+        .carouselCont img:hover {
+          opacity:0.5;
+        }
+
         .carousel {
           wdith:100dvw;
           display:flex;
@@ -126,9 +133,6 @@ img.addEventListener('click', () => {
           width:100dwv;
           overflow-x:scroll;
           scrollbar-width: none;
-        }
-        .carouselCont {
-          cursor:pointer;
         }
       </style>
     `;

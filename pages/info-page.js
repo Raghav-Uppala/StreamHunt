@@ -43,7 +43,7 @@ class InfoPage extends HTMLElement {
 
       let similarHeading = document.createElement("h1")
       similarHeading.textContent = "Similar "
-      similarHeading.className = "similarHeading"
+      similarHeading.className = "heading"
 
       let similar = document.createElement("carousel-slider")
 
@@ -65,6 +65,7 @@ class InfoPage extends HTMLElement {
       }
 
       let creditsHeading = document.createElement("h1") 
+      creditsHeading.className = "heading"
       creditsHeading.textContent = "Credits"
 
       let credits = document.createElement("credits-list")
@@ -93,7 +94,7 @@ class InfoPage extends HTMLElement {
         body {
           background-color:var(--background-50);
         }
-        .similarHeading {
+        .heading {
           color:var(--text-900);
         }
       </style>

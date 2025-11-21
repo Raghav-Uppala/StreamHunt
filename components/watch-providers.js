@@ -81,6 +81,7 @@ class WatchProviders extends HTMLElement {
     .providerCont {
       display:flex;
       gap:1rem;
+      flex-wrap: wrap;
     }
     </style>
     `;

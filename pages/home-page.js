@@ -45,25 +45,42 @@ class HomePage extends HTMLElement {
         state["countryCode"] = data.country;
       });
 
+
+    let carouselPopular = document.createElement("div")
+
+    let headingPopular = document.createElement("h1")
+    headingPopular.textContent = "Popular"
+
+    let popularMovies = document.createElement("carousel-slider")
+    popularMovies.id = "popularMovies"
+    let popularShows = document.createElement("carousel-slider")
+    popularShows.id = "popularShows"
+
+    carouselPopular.appendChild(headingPopular)
+    carouselPopular.appendChild(popularMovies)
+    carouselPopular.appendChild(popularShows)
+
+    let carouselTopRated = document.createElement("div")
+
+    let headingTopRated = document.createElement("h1")
+    headingTopRated.textContent = "Top Rated"
+
+    let topRatedMovies = document.createElement("carousel-slider")
+    topRatedMovies.id = "popularMovies"
+    let topRatedShows = document.createElement("carousel-slider")
+    topRatedShows.id = "popularShows"
+
+    carouselTopRated.appendChild(headingTopRated)
+    carouselTopRated.appendChild(topRatedMovies)
+    carouselTopRated.appendChild(topRatedShows)
+
     let carouselTM = document.createElement("carousel-slider")
-    carouselTM.id = "topRatedMovies"
+    carouselTM.id = "topRated"
+    
     let headingTM = document.createElement("h1")
-    headingTM.textContent = "Top Rated Movies"
+    headingTM.textContent = "Top Rated"
 
     let carouselTS = document.createElement("carousel-slider")
-    carouselTS.id = "topRatedShows"
-    let headingTS = document.createElement("h1")
-    headingTS.textContent = "Top Rated Shows"
-
-    let carouselPM = document.createElement("carousel-slider")
-    carouselTS.id = "popularMovies"
-    let headingPM = document.createElement("h1")
-    headingPM.textContent = "Popular Movies"
-
-    let carouselPS = document.createElement("carousel-slider")
-    carouselPS.id = "popularShows"
-    let headingPS = document.createElement("h1")
-    headingPS.textContent = "Popular Shows"
 
     this.#shadow.innerHTML = `
       <custom-header></custom-header>
@@ -71,36 +88,48 @@ class HomePage extends HTMLElement {
         h1 {
           color:var(--text-950);
         }
+        label { 
+          display: flex;
+          cursor: pointer;
+          align-items:center;
+          justify-content:center;
+          padding:0 10px;
+          border-radius:50px;
+          color:red;
+        }
+        input[type=radio] {
+          appearance: none;
+          position:absolute;
+          width:0px;
+          height:0px;
+        }
+        label:has(input[type=radio]:checked) {
+          background-color:var(--background-200);
+        }
       </style>
     `;
 
-    this.#shadow.appendChild(headingPM)
-    this.#shadow.appendChild(carouselPM)
-    this.#shadow.appendChild(headingPS)
-    this.#shadow.appendChild(carouselPS)
-    this.#shadow.appendChild(headingTM)
-    this.#shadow.appendChild(carouselTM)
-    this.#shadow.appendChild(headingTS)
-    this.#shadow.appendChild(carouselTS)
+    this.#shadow.appendChild(carouselPopular)
+    this.#shadow.appendChild(carouselTopRated)
 
     Promise.resolve(data[0])
       .then((results) => {
-        carouselTM.data = results["results"]
+        topRatedMovies.data = results["results"]
       })
 
     Promise.resolve(data[1])
       .then((results) => {
-        carouselTS.data = results["results"]
+        topRatedShows.data = results["results"]
       })
 
     Promise.resolve(data[2])
       .then((results) => {
-        carouselPM.data = results["results"]
+        popularMovies.data = results["results"]
       })
 
     Promise.resolve(data[3])
       .then((results) => {
-        carouselPS.data = results["results"]
+        popularShows.data = results["results"]
       })
   }
 }

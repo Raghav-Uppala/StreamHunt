@@ -1,3 +1,8 @@
+
+function jumpToTimestamp() {
+  player.seekTo(0, true);
+}
+
 function setDarkTheme(bool) {
   if (bool) {
     document.documentElement.setAttribute("data-theme", "dark");

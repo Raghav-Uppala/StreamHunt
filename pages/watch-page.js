@@ -23,6 +23,7 @@ class WatchPage extends HTMLElement {
       "2" : "k",
       "3" : "a",
       "4" : "s",
+      "5" : "i",
     }
     let player = document.createElement("player-frame")
     let modData = structuredClone(this.#params)
@@ -39,7 +40,8 @@ class WatchPage extends HTMLElement {
       { label: "Server 1", value: "1" },
       { label: "Server 2", value: "2" },
       { label: "Server 3", value: "3" },
-      { label: "Server 4", value: "4" }
+      { label: "Server 4", value: "4" },
+      //{ label: "Server 5", value: "5" },
     ];
     serverSelector.addEventListener("new-server", (e) => {
       modData["p"] = players[e.detail.value]

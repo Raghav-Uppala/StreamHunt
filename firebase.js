@@ -60,7 +60,6 @@ async function firebaseUpdateDocCollection(collection, data, id) {
 
 async function firebaseGetCollection(collection) {
   try {
-    console.log(state)
     let snapshot =  await db.collection("users").doc(state["user"].uid).collection(collection).get()
     if (snapshot.empty == false) {
       return ["success", snapshot]

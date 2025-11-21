@@ -1,137 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>test</title>
-  </head>
+<html>
   <body>
-<div class="dropdown">
-  <button class="dropdown-toggle">Select Episode</button>
-  <div class="dropdown-menu">
-    <!-- content will be dynamically injected here -->
-  </div>
-</div>
+    <div id="box">Hello, animate me!</div>
+    <button onclick="hideBox()">Hide</button>
+    <button onclick="showBox()">Hide</button>
+    <style>
+      #box {
+        background: lightblue;
+        padding: 20px;
+        margin: 10px 0;
+        opacity: 1;
+        overflow: hidden;
+        transition: height 0.5s ease, opacity 0.5s ease, padding 0.5s ease, margin 0.5s ease;
+      }
+    </style>
 
-<style>
-.dropdown {
-  position: relative;
-  display: inline-block;
-  width: 200px;
-  font-family: sans-serif;
-}
-
-.dropdown-toggle {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  background: white;
-  text-align: left;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  max-height: 0;
-  overflow: hidden;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: max-height 0.3s ease;
-  z-index: 100;
-}
-
-.dropdown-menu.open {
-  max-height: 300px; /* enough to show options */
-  overflow-y: auto;
-}
-
-.dropdown-item {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-
-.back-button {
-  font-weight: bold;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-</style>
 <script>
-const seasons = {
-  "Season 1": ["Episode 1", "Episode 2", "Episode 3"],
-  "Season 2": ["Episode 1", "Episode 2", "Episode 3", "Episode 4"],
-  "Season 3": ["Episode 1", "Episode 2"]
-};
+function hideBox() {
+  const box = document.getElementById("box");
 
-const dropdown = document.querySelector(".dropdown");
-const toggle = dropdown.querySelector(".dropdown-toggle");
-const menu = dropdown.querySelector(".dropdown-menu");
+  // Measure natural height
+  const height = box.scrollHeight;
 
-menu.addEventListener("click", e => e.stopPropagation());
+  // Set height explicitly to trigger transition
+  box.style.height = height + "px";
 
-let currentSeason = "Season 1";
-
-toggle.addEventListener("click", () => {
-  menu.classList.toggle("open");
-  showEpisodes(currentSeason);
-});
-
-// Show episodes for a season
-function showEpisodes(season) {
-  currentSeason = season;
-  menu.innerHTML = `
-    <div class="back-button">← Back to Seasons</div>
-    ${seasons[season].map(ep => `<div class="dropdown-item">${ep}</div>`).join("")}
-  `;
-
-  // Back button event
-  menu.querySelector(".back-button").addEventListener("click", (e) => {
-    e.stopPropagation(); // <- stop the click from bubbling to document
-    showSeasons();
+  // Trigger animation on next frame
+  requestAnimationFrame(() => {
+    box.style.height = "0px";
+    box.style.opacity = "0";
+    box.style.padding = "0px";
+    box.style.margin = "0px";
   });
 
-  // Episode click events
-  menu.querySelectorAll(".dropdown-item").forEach(item => {
-    item.addEventListener("click", () => {
-      toggle.textContent = `${season} - ${item.textContent}`;
-      menu.classList.remove("open");
-    });
+  // After transition, set display:none
+  box.addEventListener("transitionend", function handler(e) {
+    if (e.propertyName === "height") {
+      box.style.display = "none";
+      box.removeEventListener("transitionend", handler);
+    }
   });
 }
+function showBox() {
+  const box = document.getElementById("box");
+  box.style.display = "block";
 
-// Show season list
-function showSeasons() {
-  menu.innerHTML = `
-    ${Object.keys(seasons).map(s => `<div class="dropdown-item">${s}</div>`).join("")}
-  `;
+  // Reset padding/margin/height to 0 for starting point
+  box.style.height = "0px";
+  box.style.padding = "0px";
+  box.style.margin = "0px";
+  box.style.opacity = "0";
 
-  menu.querySelectorAll(".dropdown-item").forEach(item => {
-    item.addEventListener("click", () => {
-      showEpisodes(item.textContent);
-    });
+  const naturalHeight = box.scrollHeight;
+
+  requestAnimationFrame(() => {
+    box.style.height = naturalHeight + "px";
+    box.style.padding = "20px"; // restore original padding
+    box.style.margin = "10px 0"; // restore original margin
+    box.style.opacity = "1";
   });
 }
-
-// Close dropdown if clicking outside
-document.addEventListener("click", e => {
-  if (!dropdown.contains(e.target)) {
-    menu.classList.remove("open");
-  }
-});
-
 </script>
   </body>
 </html>
+
