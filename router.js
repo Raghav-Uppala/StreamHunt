@@ -29,6 +29,7 @@ let routes = {
   "search" : "search-page",
   "info" : "info-page",
   "watch" : "watch-page",
+  "person" : "person-page",
 }
 
 function findPage({path, params}) {

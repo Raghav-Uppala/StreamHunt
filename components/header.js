@@ -69,56 +69,42 @@ class CustomHeader extends HTMLElement {
     searchIcon.innerHTML = `<svg class="searchIconSvg" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">A magnifying glass icon.</desc><g class="search-path" fill="none" stroke="#848F91"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg>`
     searchIcon.setAttribute("aria-pressed", "false")
     searchIcon.className = "searchIcon"
+    searchBarCont.appendChild(searchIcon)
 
     searchIcon.addEventListener("click", ()=>{
-      const pressed = searchIcon.getAttribute("aria-pressed") === "true";
-      searchIcon.setAttribute("aria-pressed", !pressed);
-
-     if (!pressed) {
-        // open
-        searchBarCont.insertBefore(searchBar, searchIcon);
+      let pressed = searchIcon.getAttribute("aria-pressed");
+      if (pressed == "false") {
+        searchIcon.setAttribute("aria-pressed", "true")
         void searchBar.offsetWidth;
         requestAnimationFrame(() => {
           searchBar.classList.add("open");
         });
+        searchBar.style.display = "flex"
         searchBar.focus();
         searchBar.addEventListener(
           "blur",
           () => {
             searchBar.classList.remove("open");
-            searchIcon.setAttribute("aria-pressed", "false");
-
-            // wait for animation to finish before removing
-            searchBar.addEventListener(
-              "transitionend",
-              () => {
-                if (searchBar.parentElement) {
-                  searchBarCont.removeChild(searchBar);
-                }
-              },
-              { once: true }
-            );
+            searchIcon.setAttribute("aria-pressed", "false")
           },
-          { once: true } // ensures the blur listener runs only once
+          { once: true }
         );
-      } else {
-        // close (wait for transition to finish before removing)
+      } else if (pressed == "true"){
+        searchIcon.setAttribute("aria-pressed", "false")
         searchBar.classList.remove("open");
         searchBar.addEventListener(
           "transitionend",
           () => {
-            if (searchBar.parentElement) {
-              searchBarCont.removeChild(searchBar);
-            }
+            searchBar.style.display = "none"
           },
           { once: true }
         );
-      }
+      } 
     }); 
 
     let searchBar = document.createElement("input")
     searchBar.className = "searchBar"
-
+    searchBarCont.appendChild(searchBar);
 
     searchBar.addEventListener("keypress", (e) => {
       if(e.key == "Enter") {
@@ -149,8 +135,6 @@ class CustomHeader extends HTMLElement {
     })
 
     stateListener.addEventListener("update-user", () => {userGetShows()})
-
-    searchBarCont.appendChild(searchIcon)
     
     //container.appendChild(themeSwitcher);
     container.appendChild(loginform)
@@ -217,7 +201,6 @@ class CustomHeader extends HTMLElement {
         }
         #container {
           display:flex;
-          flex-direction:row-reverse;
           align-items:center;
           height:50px;
         }

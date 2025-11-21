@@ -68,6 +68,10 @@ class CreditsList extends HTMLElement {
             img.src = "https://placehold.co/182x278/60656b/FFF?text=No+Poster"
           }
 
+          elemDiv.addEventListener('click', () => {
+            window.location.hash='person?id=' + elem["id"]
+          })
+
           elemDiv.appendChild(img)
           elemDiv.appendChild(name)
           elemDiv.appendChild(job)
@@ -107,15 +111,22 @@ class CreditsList extends HTMLElement {
           }
         }
 
-        img.src = 'https://image.tmdb.org/t/p/w185/' + elem["profile_path"]
+        img.src = 'https://image.tmdb.org/t/p/h632/' + elem["profile_path"]
         if (elem["profile_path"] == null || elem["profile_path"] == undefined) {
-          img.src = "https://placehold.co/182x513/60656b/FFF?text=No+Poster"
+          img.src = "https://placehold.co/182x278/60656b/FFF?text=No+Poster"
         }
+
+        elemDiv.addEventListener('click', () => {
+          window.location.hash='person?id=' + elem["id"]
+        })
 
         elemDiv.appendChild(img)
         elemDiv.appendChild(name)
         elemDiv.appendChild(character)
         container.appendChild(elemDiv)
+        elemDiv.addEventListener("click", () => {
+          container.scrollBy({ left: -window.innerWidth * 0.8, top: 0, behavior: 'smooth' })
+        })
         count++
       }
     }
@@ -178,9 +189,10 @@ class CreditsList extends HTMLElement {
           background-color:var(--secondary-100);
         }
         .creditImg {
+          width:185px;
+          height:276.4px;
           border-radius:10px 10px 0px 0px;
           height:auto;
-          width:100%;
         }
         .name {
           font-weight:bold;

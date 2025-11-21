@@ -200,8 +200,18 @@ async function userUpdateShow(id, ep, season) {
 async function userAddShow(id, ep, season) {
   try {
     const showCollection = await firebaseAddToCollection("Shows", {"episode" : ep, "season" : season}, id)
-    console.log(showCollection)
     return showCollection
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+// Person related calls
+
+async function getPersonByID(id) {
+  try {
+    const det = await fetch("https://api.themoviedb.org/3/person/" + id + "?language=en-US&append_to_response=movie_credits,tv_credits", options)
+    return det.json()
   } catch (error) {
     return ["error", error]
   }
