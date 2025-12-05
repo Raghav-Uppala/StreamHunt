@@ -30,13 +30,15 @@ class PlayerFrame extends HTMLElement {
     if (this.#data["p"] == "v") {
       let type = "movie"
       let season_ep = ""
+      let startAt = ""
       if (this.#data["t"] == "m") {
         type = "movie"
+        //startAt += "startAt="+this.#data["watchProgress"]
       } else if (this.#data["t"] = "s") {
         type = "tv"
         season_ep = "/" + this.#data["s"] + "/" + this.#data["e"]
       }
-      link = "https://vidlink.pro/" + type + "/" + this.#data["id"] + season_ep
+      link = "https://vidlink.pro/" + type + "/" + this.#data["id"] + season_ep +  "?" + startAt
     } else if (this.#data["p"] == "e") {
       link = "https://www.2embed.cc/"
       if (this.#data["t"] == "m") {
@@ -59,9 +61,11 @@ class PlayerFrame extends HTMLElement {
         link += "/tv/" + this.#data["id"] + "/" + this.#data["s"] + "-" + this.#data["e"]
       }
     } else if (this.#data["p"] == "k") {
+      let startAt = "?"
       link = "https://www.vidking.net/embed/"
       if (this.#data["t"] == "m") {
-        link += "movie/" + this.#data["id"]
+        //startAt += "startAt="+this.#data["watchProgress"]
+        link += "movie/" + this.#data["id"] + startAt
       } else if (this.#data["t"] == "s") {
         link += "tv/" + this.#data["id"] + "/" + this.#data["s"] + "/" + this.#data["e"]
       }

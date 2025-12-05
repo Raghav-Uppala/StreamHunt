@@ -42,3 +42,4 @@ setState("user", null)
 
 
 stateListener.addEventListener("update-user", () => {userGetShows()})
+stateListener.addEventListener("update-user", () => {userGetMovies()})

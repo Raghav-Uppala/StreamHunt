@@ -41,6 +41,10 @@ class PersonPage extends HTMLElement {
         let sidebar = document.createElement("div")
         sidebar.className = "sidebar"
 
+        let profilePic = document.createElement("img")
+        profilePic.className = "profilePic"
+        profilePic.src = "https://image.tmdb.org/t/p/h632/" + res["profile_path"]
+
         let birthday = document.createElement("p")
         birthday.textContent = res["birthday"]
         birthday.className = "text"
@@ -57,6 +61,7 @@ class PersonPage extends HTMLElement {
         rating.textContent = Math.round(res["popularity"] * 10)/10
         rating.className = "text"
 
+        sidebar.appendChild(profilePic)
         sidebar.appendChild(knownFor)
         sidebar.appendChild(birthday)
         sidebar.appendChild(placeOfBirth)
@@ -115,6 +120,12 @@ class PersonPage extends HTMLElement {
         .main {
           display:flex;
           gap:1em;
+        }
+        .profilePic {
+          width:185px;
+          height:276.4px;
+          border-radius:10px 10px 0px 0px;
+          height:auto;
         }
       </style>
     `;

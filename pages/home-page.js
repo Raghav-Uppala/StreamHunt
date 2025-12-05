@@ -37,6 +37,44 @@ class HomePage extends HTMLElement {
     return this.#params;
   }
 
+  getHeading(text) {
+    let headingPopular = document.createElement("div")
+    headingPopular.className += "heading"
+
+    let headingTextPopular = document.createElement("h1")
+    headingTextPopular.textContent = text
+
+    let popularSelector = document.createElement("div")
+    popularSelector.className = "selector"
+
+    let labelMPopular = document.createElement("label");
+    let inputMPopular = document.createElement("input");
+    inputMPopular.type = "radio";
+    inputMPopular.name = text+"Selector";
+    inputMPopular.value = "movies";
+
+    inputMPopular.checked = true;
+    labelMPopular.appendChild(inputMPopular);
+    labelMPopular.append("Movies");
+
+    let labelSPopular = document.createElement("label");
+    let inputSPopular = document.createElement("input");
+    inputSPopular.type = "radio";
+    inputSPopular.name = text+"Selector";
+    inputSPopular.value = "shows";
+
+    labelSPopular.appendChild(inputSPopular);
+    labelSPopular.append("Shows");
+
+    popularSelector.appendChild(labelMPopular);
+    popularSelector.appendChild(labelSPopular);
+
+    headingPopular.appendChild(headingTextPopular)
+    headingPopular.appendChild(popularSelector);
+
+    return [headingPopular, [inputSPopular, inputMPopular]] 
+  }
+
   render(data) {
     fetch('https://ipapi.co/json/')
       .then(res => res.json())
@@ -48,8 +86,7 @@ class HomePage extends HTMLElement {
 
     let carouselPopular = document.createElement("div")
 
-    let headingPopular = document.createElement("h1")
-    headingPopular.textContent = "Popular"
+    let [headingPopular, inputArrPopular] = this.getHeading("Popular")
 
     let popularMovies = document.createElement("carousel-slider")
     popularMovies.id = "popularMovies"
@@ -58,12 +95,20 @@ class HomePage extends HTMLElement {
 
     carouselPopular.appendChild(headingPopular)
     carouselPopular.appendChild(popularMovies)
-    carouselPopular.appendChild(popularShows)
+
+    inputArrPopular.forEach((elem) => elem.addEventListener("change", (e) => {
+      if (e.target.value == "shows") {
+        carouselPopular.removeChild(popularMovies)
+        carouselPopular.appendChild(popularShows)
+      } else if (e.target.value == "movies") {
+        carouselPopular.removeChild(popularShows)
+        carouselPopular.appendChild(popularMovies)
+      }
+    }))
 
     let carouselTopRated = document.createElement("div")
 
-    let headingTopRated = document.createElement("h1")
-    headingTopRated.textContent = "Top Rated"
+    let [headingTopRated, inputArrTopRated] = this.getHeading("Top Rated")
 
     let topRatedMovies = document.createElement("carousel-slider")
     topRatedMovies.id = "popularMovies"
@@ -72,7 +117,16 @@ class HomePage extends HTMLElement {
 
     carouselTopRated.appendChild(headingTopRated)
     carouselTopRated.appendChild(topRatedMovies)
-    carouselTopRated.appendChild(topRatedShows)
+
+    inputArrTopRated.forEach((elem) => elem.addEventListener("change", (e) => {
+      if (e.target.value == "shows") {
+        carouselTopRated.removeChild(topRatedMovies)
+        carouselTopRated.appendChild(topRatedShows)
+      } else if (e.target.value == "movies") {
+        carouselTopRated.removeChild(topRatedShows)
+        carouselTopRated.appendChild(topRatedMovies)
+      }
+    }))
 
     let carouselTM = document.createElement("carousel-slider")
     carouselTM.id = "topRated"
@@ -80,22 +134,39 @@ class HomePage extends HTMLElement {
     let headingTM = document.createElement("h1")
     headingTM.textContent = "Top Rated"
 
-    let carouselTS = document.createElement("carousel-slider")
+    //let carouselTS = document.createElement("carousel-slider")
+
+    let container = document.createElement("div")
+    container.className += "container"
+
+    container.appendChild(document.createElement("custom-header"))
+    container.appendChild(carouselPopular)
+    container.appendChild(carouselTopRated)
 
     this.#shadow.innerHTML = `
-      <custom-header></custom-header>
       <style>
+        .heading {
+          display:flex;
+        }
+        .container {
+          margin:0px 1dvw;
+        }
         h1 {
           color:var(--text-950);
+        }
+        .selector {
+          display:flex;
+          align-items:center;
+          margin-left:10px;
         }
         label { 
           display: flex;
           cursor: pointer;
           align-items:center;
           justify-content:center;
-          padding:0 10px;
-          border-radius:50px;
-          color:red;
+          margin-left:10px;
+          color:var(--text-700);
+          height:30px;
         }
         input[type=radio] {
           appearance: none;
@@ -104,13 +175,14 @@ class HomePage extends HTMLElement {
           height:0px;
         }
         label:has(input[type=radio]:checked) {
-          background-color:var(--background-200);
+          color:var(--text-950);
+          margin-bottom:-3px;
+          border-bottom:solid red 3px;
         }
       </style>
     `;
 
-    this.#shadow.appendChild(carouselPopular)
-    this.#shadow.appendChild(carouselTopRated)
+    this.#shadow.appendChild(container)
 
     Promise.resolve(data[0])
       .then((results) => {

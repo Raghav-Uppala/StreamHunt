@@ -46,7 +46,7 @@ class CarouselSlider extends HTMLElement {
       })
 
       container.appendChild(img)
-      //container.appendChild(popover)
+      container.setAttribute("tabindex", "0")
       
       html.appendChild(container)
     }
@@ -111,6 +111,7 @@ class CarouselSlider extends HTMLElement {
           -webkit-transform: rotate(45deg);
         }
         .carouselCont {
+          position:relative;
           cursor:pointer;
           display:flex;
         }

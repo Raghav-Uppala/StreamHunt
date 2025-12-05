@@ -27,6 +27,7 @@ class WatchPage extends HTMLElement {
     }
     let player = document.createElement("player-frame")
     let modData = structuredClone(this.#params)
+    modData["watchProgress"] = 0
     if (this.#params["p"] != null) {
       modData["p"] = players[this.#params["p"]] 
     } else {
@@ -60,7 +61,6 @@ class WatchPage extends HTMLElement {
           episodeSelector.data = res["seasons"]
           getShowSeasonsById(this.#params["id"], res["number_of_seasons"])
             .then(results => {
-              console.log(results)
               let data = []
               for (let i = 0; i < res["number_of_seasons"]; i++) {
                 data.push(results["season/" + (i+1)])
@@ -84,23 +84,39 @@ class WatchPage extends HTMLElement {
     }
 
     let updateTimer = null
-    function addDoc(params) {
+    function addDocShow(params) {
       updateTimer = setTimeout(async () => {
         userAddShow(params["id"], params["e"], params["s"])
+      }, 10000)
+    }
+    function addDocMovie(params) {
+      updateTimer = setTimeout(async () => {
+        userAddMovie(params["id"])
       }, 10000)
     }
 
     function cancel() {
       if (updateTimer) {
-        console.log("canceled")
         clearTimeout(updateTimer)
         updateTimer = null
       }
     }
 
-    if (state["shows"] && !(this.#params["id"] in state["shows"])) {
+    if (state["shows"] && !(this.#params["id"] in state["shows"]) && this.#params["t"] == "s") {
       if(!("notLoaded" in this.#params) && this.#params["e"] != 1) {
-        addDoc(this.#params)
+        addDocShow(this.#params)
+      }
+    }
+
+    if (state["movies"] && (this.#params["id"] in state["movies"]) && this.#params["t"] == "m") {
+      if(!("notLoaded" in this.#params)) {
+        modData["watchProgress"] = state["movies"][this.#params["id"]]["timeStamp"]
+        console.log(state["movies"][this.#params["id"]]["timeStamp"])
+        player.data = modData
+      }
+    } else if (state["movies"] && !(this.#params["id"] in state["movies"]) && this.#params["t"] == "m") {
+      if(!("notLoaded" in this.#params)) {
+        addDocMovie(this.#params["id"])
       }
     }
 
@@ -122,6 +138,30 @@ class WatchPage extends HTMLElement {
     this.#shadow.appendChild(player)
     this.#shadow.appendChild(details)
     this.#shadow.appendChild(backButton)
+
+    //if (state["movies"] && this.#params["t"] == "m") {
+    //  if(!("notLoaded" in this.#params)) {
+    //    window.addEventListener('message', (event) => {
+    //      if (event.origin == 'https://vidlink.pro') {
+    //        if (event.data?.type === 'MEDIA_DATA') {
+    //          const mediaData = event.data.data;
+    //          console.log(Math.abs(state["movies"][this.#params["id"]]["timeStamp"] - mediaData[this.#params["id"]]["progress"]["watched"]))
+    //          if (Math.abs(state["movies"][this.#params["id"]]["timeStamp"] - mediaData[this.#params["id"]]["progress"]["watched"]) > 30) {
+    //            console.log("h")
+    //            userUpdateMovie(this.#params["id"], mediaData[this.#params["id"]]["progress"]["watched"])
+    //          }
+    //        }
+    //      } else if (event.origin == "https://www.vidking.net") {
+    //        const mediaData = event.data.data;
+    //        console.log(event.data)
+    //        if (Math.abs(state["movies"][this.#params["id"]]["timeStamp"] - mediaData[this.#params["id"]][""]["watched"]) > 30) {
+    //          console.log("h")
+    //          userUpdateMovie(this.#params["id"], mediaData[this.#params["id"]]["progress"]["watched"])
+    //        }
+    //      } 
+    //    });
+    //  }
+    //}
 
   }
 }

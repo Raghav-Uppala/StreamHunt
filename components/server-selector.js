@@ -18,7 +18,6 @@ class ServerSelector extends HTMLElement {
   }
 
   render() {
-    const groupName = "serverSelector";
     let container = document.createElement("div")
     container.className = "serverSelectorCont"
 
@@ -26,7 +25,7 @@ class ServerSelector extends HTMLElement {
       const label = document.createElement("label");
       const input = document.createElement("input");
       input.type = "radio";
-      input.name = groupName;
+      input.name = "serverSelector";
       input.value = opt.value;
 
       if (i === 0) {

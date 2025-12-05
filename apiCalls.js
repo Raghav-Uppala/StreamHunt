@@ -9,6 +9,7 @@ const options = {
 // Movie API calls
 
 async function getTopRatedMovies() {
+  console.log("h")
   return fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
     .then(res => res.json())
     .catch(err => console.error(err));
@@ -166,11 +167,51 @@ async function getShowCredits(id) {
 
 // User related calls 
 
+async function userGetMovies() {
+  try {
+    const [status, movieCollection] = await firebaseGetCollection("Movies")
+    if (movieCollection == "empty") {
+      setState("movies", {})
+      return ["error", null]
+    } else {
+      let data = {}
+      movieCollection.forEach(doc => {
+        data[doc.id] = doc.data();
+      });
+      setState("movies", data)
+      return ["success", data]
+    }
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+async function userUpdateMovie(id, timeStamp) {
+  try {
+    const movieCollection = await firebaseUpdateDocCollection("Movies", {"timeStamp" : timeStamp}, id)
+    let newState = state["movies"]
+    newState[id] = {"timeStamp" : timeStamp}
+    setState("movies", newState)
+    return movieCollection
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+async function userAddMovie(id) {
+  try {
+    const movieCollection = await firebaseAddToCollection("Movies", {"timeStamp" : "0"}, id)
+    return movieCollection
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
 async function userGetShows() {
   try {
     const [status, showCollection] = await firebaseGetCollection("Shows")
     if (showCollection == "empty") {
-      setState("shows", "empty")
+      setState("shows", {})
       return ["error", null]
     } else {
       let data = {}
@@ -211,6 +252,15 @@ async function userAddShow(id, ep, season) {
 async function getPersonByID(id) {
   try {
     const det = await fetch("https://api.themoviedb.org/3/person/" + id + "?language=en-US&append_to_response=movie_credits,tv_credits", options)
+    return det.json()
+  } catch (error) {
+    return ["error", error]
+  }
+}
+
+async function getPeopleByName(name) {
+  try {
+    const det = await fetch("https://api.themoviedb.org/3/search/person?query=" + name + "?language=en-US", options)
     return det.json()
   } catch (error) {
     return ["error", error]

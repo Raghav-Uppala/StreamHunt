@@ -184,6 +184,7 @@ class CreditsList extends HTMLElement {
           color:var(--text-900);
           background-color:var(--primary-100);
           border-radius:10px;
+          cursor:pointer;
         }
         .creditContainer:hover {
           background-color:var(--secondary-100);
